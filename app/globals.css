@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Use class-based dark mode (next-themes sets class="dark" on <html>)
+   Without this, Tailwind v4 defaults to prefers-color-scheme media query
+   which ignores the toggle and uses OS preference instead */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
   --pinterest: #E60023;
   --pinterest-dark: #AD081B;
