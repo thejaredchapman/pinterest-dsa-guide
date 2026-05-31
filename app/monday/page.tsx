@@ -53,6 +53,12 @@ def inOrder(root):
       "You know all three traversals AND what each one is FOR. Most people can name them. You can deploy them. There's a difference between knowing the names and knowing which to reach for. You know both.",
       "In-order. Pre-order. Post-order. You know all three, you know what each one is FOR, and you can implement all of them from memory. Megatron transforms into a jet and he still can't do what you just did.",
     ],
+    video: { id: "jmy0LaGET1I", title: "Binary Tree Traversals — BFS & DFS", channel: "take U forward" },
+    leetcode: [
+      { number: 104, title: "Maximum Depth of Binary Tree", difficulty: "Easy",   slug: "maximum-depth-of-binary-tree" },
+      { number: 226, title: "Invert Binary Tree",           difficulty: "Easy",   slug: "invert-binary-tree" },
+      { number: 98,  title: "Validate Binary Search Tree",  difficulty: "Medium", slug: "validate-binary-search-tree" },
+    ],
   },
   {
     number: 10,
@@ -100,6 +106,12 @@ def qheap1(queries):
       "The heap runs Pinterest's feed. Every time someone pulls up their home feed and the most relevant pins appear instantly, that's a heap at work. You didn't just study a data structure — you studied the engine behind the product you're interviewing for.",
       "Lazy deletion is wisdom disguised as an algorithm. You don't clean up everything when a change happens. You clean up when someone actually needs the answer. Tyrion Lannister said 'I drink and I know things.' You know when to clean the heap and when to leave it alone.",
       "You run this heap like you built it yourself. Because now you did.",
+    ],
+    video: { id: "rrbZz23DWHI", title: "Learn Heaps and Priority Queues in Python! | NeetCode 150 Ep.17", channel: "NeetCode" },
+    leetcode: [
+      { number: 215, title: "Kth Largest Element in an Array", difficulty: "Medium", slug: "kth-largest-element-in-an-array" },
+      { number: 347, title: "Top K Frequent Elements",         difficulty: "Medium", slug: "top-k-frequent-elements" },
+      { number: 295, title: "Find Median from Data Stream",    difficulty: "Hard",   slug: "find-median-from-data-stream" },
     ],
   },
   {
@@ -174,6 +186,12 @@ class Trie:
       "You just built autocomplete from scratch. The exact feature that runs every time someone types in Pinterest's search bar. You built that. You understand every node, every path, every is_end flag.",
       "Ichigo unlocked Bankai — a power that took most Soul Reapers decades to achieve — in three days. You built autocomplete in one study session. Same timeline. Same energy. Different domain. Totally valid comparison.",
       "The trie is efficient because it shares structure. Cat and car don't store two separate c's. They share. This is the engineering principle of reuse at its most elegant. Don't duplicate work. Share what's common. This is how great codebases are maintained.",
+    ],
+    video: { id: "bDGZ_i7qoWw", title: "NEETCODE Challenge #76 — Implement Trie (Prefix Tree)", channel: "NeetCode" },
+    leetcode: [
+      { number: 208, title: "Implement Trie (Prefix Tree)",               difficulty: "Medium", slug: "implement-trie-prefix-tree" },
+      { number: 211, title: "Design Add and Search Words Data Structure", difficulty: "Medium", slug: "design-add-and-search-words-data-structure" },
+      { number: 212, title: "Word Search II",                             difficulty: "Hard",   slug: "word-search-ii" },
     ],
   },
 ];

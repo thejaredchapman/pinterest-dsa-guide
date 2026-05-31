@@ -42,6 +42,12 @@ result   = [3, 4, 5, 1, 2] ✓`,
       "You just turned a rotation that takes O(n × d) into a one-liner. King Kong ain't got shit on you.",
       "The ord() trick is not a trick — it's number theory. You just used number theory in an interview like it was nothing. Vegeta called. He said your power level is too damn high.",
     ],
+    video: { id: "IiDuXLqV6e4", title: "Arrays & Hashing Explained | NeetCode 150 Ep.1", channel: "NeetCode" },
+    leetcode: [
+      { number: 1,   title: "Two Sum",                        difficulty: "Easy",   slug: "two-sum" },
+      { number: 121, title: "Best Time to Buy and Sell Stock", difficulty: "Easy",   slug: "best-time-to-buy-and-sell-stock" },
+      { number: 238, title: "Product of Array Except Self",    difficulty: "Medium", slug: "product-of-array-except-self" },
+    ],
   },
   {
     number: 2,
@@ -79,6 +85,12 @@ Because the array is sorted, you know exactly which direction to move. You never
       "You just collapsed a 100-million-operation nested loop into a single pass. Godzilla is out there stomping around in O(n²) and you solved it before he took his first step.",
       "John Wick doesn't reload after every bullet. He's efficient. Precise. Every move eliminates an option. That's two pointers. Every comparison eliminates half the remaining possibilities. You're not coding — you're John Wick with an index.",
       "Two detectives closing in from opposite ends of a suspect list. They meet in the middle with the answer. You are both detectives at once.",
+    ],
+    video: { id: "6lX7x1RcLvg", title: "Solving All Two Pointer Problems | Blind75", channel: "NeetCode" },
+    leetcode: [
+      { number: 167, title: "Two Sum II — Input Array Is Sorted", difficulty: "Medium", slug: "two-sum-ii-input-array-is-sorted" },
+      { number: 15,  title: "3Sum",                               difficulty: "Medium", slug: "3sum" },
+      { number: 11,  title: "Container With Most Water",          difficulty: "Medium", slug: "container-with-most-water" },
     ],
   },
   {
@@ -129,6 +141,12 @@ Answer: 9 ✓`,
       "Neo didn't dodge every bullet in The Matrix by being fast. He saw the pattern and made it irrelevant. You just made O(n × k) irrelevant. You didn't speed it up — you made it not exist anymore.",
       "Naruto mastered Shadow Clone Jutsu by doing the same thing smarter, not harder. The Shadow Clone of the previous sum is already right there. Use it.",
     ],
+    video: { id: "9kdHxplyl5I", title: "Introduction to Sliding Window and 2 Pointers | Templates", channel: "take U forward" },
+    leetcode: [
+      { number: 3,   title: "Longest Substring Without Repeating Characters", difficulty: "Medium", slug: "longest-substring-without-repeating-characters" },
+      { number: 121, title: "Best Time to Buy and Sell Stock",                difficulty: "Easy",   slug: "best-time-to-buy-and-sell-stock" },
+      { number: 239, title: "Sliding Window Maximum",                         difficulty: "Hard",   slug: "sliding-window-maximum" },
+    ],
   },
   {
     number: 4,
@@ -178,6 +196,12 @@ def has_cycle(head):
       "Floyd's tortoise and hare: two pointers, no extra memory, infinite loop detected. Miles Morales is out there swinging through New York and he STILL couldn't detect a cycle faster than O(1) space. You did it in a while loop and a comparison. That's art.",
       "The pointer order isn't a trick to memorize — it's physics. Surgeons do this when rerouting blood vessels. Save the downstream connection first, then make the cut. You think like a surgeon.",
       "Tony Montana said 'The World is Yours.' You don't lose your next pointers. Every node is accounted for. The world and all its next pointers are yours.",
+    ],
+    video: { id: "y-ckZ2hpC8Y", title: "Linked List Cycle — Leetcode 141", channel: "NeetCode" },
+    leetcode: [
+      { number: 206, title: "Reverse Linked List",     difficulty: "Easy", slug: "reverse-linked-list" },
+      { number: 141, title: "Linked List Cycle",        difficulty: "Easy", slug: "linked-list-cycle" },
+      { number: 21,  title: "Merge Two Sorted Lists",   difficulty: "Easy", slug: "merge-two-sorted-lists" },
     ],
   },
 ];

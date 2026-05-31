@@ -50,6 +50,12 @@ def bfs(n, edges, start):
       "You know WHY BFS finds shortest paths — not just that it does. Knowing 'that it works' is for people who passed a quiz. Knowing 'why it works' is for people who design systems. You design systems.",
       "Layer by layer. Shortest path guaranteed. Xerxes had a whole army. You just need a queue and a visited set.",
     ],
+    video: { id: "6ZnyEApgFYg", title: "Binary Tree Level Order Traversal — BFS — Leetcode 102", channel: "NeetCode" },
+    leetcode: [
+      { number: 102, title: "Binary Tree Level Order Traversal", difficulty: "Medium", slug: "binary-tree-level-order-traversal" },
+      { number: 994, title: "Rotting Oranges",                   difficulty: "Medium", slug: "rotting-oranges" },
+      { number: 127, title: "Word Ladder",                       difficulty: "Hard",   slug: "word-ladder" },
+    ],
   },
   {
     number: 13,
@@ -99,6 +105,12 @@ Pinterest board exploration. "Find all boards reachable from this Pin" — DFS. 
       "You can write DFS both recursively and iteratively and explain WHY they produce the same result. Most people see two different algorithms. You see one truth with two implementations. That's mastery.",
       "You found every island on that grid and marked every connected cell in a single DFS sweep. You'd fuck Godzilla up — then calmly count the islands he left behind.",
     ],
+    video: { id: "gCswsDauXPc", title: "Number of Islands — Leetcode 200 — Graphs (Python)", channel: "NeetCode" },
+    leetcode: [
+      { number: 200, title: "Number of Islands",          difficulty: "Medium", slug: "number-of-islands" },
+      { number: 133, title: "Clone Graph",                difficulty: "Medium", slug: "clone-graph" },
+      { number: 417, title: "Pacific Atlantic Water Flow", difficulty: "Medium", slug: "pacific-atlantic-water-flow" },
+    ],
   },
   {
     number: 14,
@@ -143,6 +155,12 @@ def fibonacci(n):
       "You took O(2ⁿ) — literally exponential, basically unusable — down to O(n) with a dictionary. You didn't just fix the code. You understood WHY it was broken first. Goku went Super Saiyan and you were already there.",
       "The memo=None pattern is a real Python gotcha that trips senior engineers. You know about it. You know WHY it happens. You know the fix. That level of language awareness separates engineers who write Python from engineers who understand Python.",
       "Saitama trained until the training was boring. He didn't find a shortcut — he did the reps until the answer was cached in his muscles. Memoization is the same. The first time you compute fib(30), you do the work. Every time after that, it's instant. You put in the reps once. After that, you're Saitama. One punch. Cached.",
+    ],
+    video: { id: "WRoz58oOO7o", title: "Fibonacci Number | Recursion + Memoization + Tabulation", channel: "take U forward" },
+    leetcode: [
+      { number: 509, title: "Fibonacci Number", difficulty: "Easy",   slug: "fibonacci-number" },
+      { number: 70,  title: "Climbing Stairs",  difficulty: "Easy",   slug: "climbing-stairs" },
+      { number: 198, title: "House Robber",      difficulty: "Medium", slug: "house-robber" },
     ],
   },
   {
@@ -207,6 +225,12 @@ Answer: 2 (use coin 3 twice: 3+3=6) ✓`,
       "Filling a DP table by hand, row by row, and explaining every cell — that's the difference between someone who memorized an algorithm and someone who understands the recurrence. Darth Vader built his power through accumulated mastery. You built yours through accumulated sub-problems.",
       "Bottom-up DP has no recursion. No stack. No overhead. It just fills cells. Left to right, row by row. Muhammad Ali said 'I don't count my sit-ups. I only start counting when it starts hurting.' You've been doing the reps. The table is filling itself.",
       "Two strings become a table, and the table becomes a story of every way the strings overlap. By the time you reach the bottom-right corner, you've traced every possible alignment of those two strings and found the longest one. You just did DNA sequence alignment. That's biology. That's linguistics. That's a nested for loop. You did all of those things at once.",
+    ],
+    video: { id: "_i4Yxeh5ceQ", title: "Dynamic Programming 1D — Full Course — Python", channel: "NeetCode" },
+    leetcode: [
+      { number: 322,  title: "Coin Change",                  difficulty: "Medium", slug: "coin-change" },
+      { number: 1143, title: "Longest Common Subsequence",   difficulty: "Medium", slug: "longest-common-subsequence" },
+      { number: 300,  title: "Longest Increasing Subsequence", difficulty: "Medium", slug: "longest-increasing-subsequence" },
     ],
   },
 ];

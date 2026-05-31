@@ -52,6 +52,12 @@ stack empty → "YES" ✓`,
       "Batman doesn't get confused when situations nest inside each other. Hostage situation inside a burning building inside a blackout inside a city under attack. He pushes each layer onto his mental stack, solves the deepest one, and unwinds. You just described recursion. You just described Batman.",
       "Thanos has all six Infinity Stones. You have a stack. Yours is more useful.",
     ],
+    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Leetcode 20 — Stack", channel: "NeetCode" },
+    leetcode: [
+      { number: 20,  title: "Valid Parentheses", difficulty: "Easy",   slug: "valid-parentheses" },
+      { number: 155, title: "Min Stack",          difficulty: "Medium", slug: "min-stack" },
+      { number: 739, title: "Daily Temperatures",  difficulty: "Medium", slug: "daily-temperatures" },
+    ],
   },
   {
     number: 6,
@@ -97,6 +103,11 @@ class MyQueue:
       "You know why deque exists, you know why list.pop(0) is a trap, and you can explain it in production terms. Most candidates know WHAT a queue is. You know WHY the implementation detail matters. That's the difference between someone who passed a course and someone who builds systems.",
       "Goku figured out that combining Kaioken with Super Saiyan was too much for his body. You figured out that combining two stacks is exactly right for a queue. Better than Goku. Confirmed.",
     ],
+    video: { id: "eanwa3ht3YQ", title: "Implement Queue using Stacks — Leetcode 232", channel: "NeetCode" },
+    leetcode: [
+      { number: 232, title: "Implement Queue using Stacks", difficulty: "Easy", slug: "implement-queue-using-stacks" },
+      { number: 933, title: "Number of Recent Calls",       difficulty: "Easy", slug: "number-of-recent-calls" },
+    ],
   },
   {
     number: 7,
@@ -133,6 +144,12 @@ The complement trick in real life: You're buying two groceries and have $20. Wal
       "The complement trick is beautiful because it inverts the problem. Instead of asking 'does this pair work?' you ask 'what do I still need, and have I seen it?' Future Jared set up the answer for Present Jared. The hash map is a message from your past self.",
       "Jason Bourne doesn't enter a room and check every person for a threat. He scans once, maps the room, and now every threat is retrievable in O(1). That's a hash map. You are Jason Bourne every time you reach for a dict instead of a nested loop.",
       "Hash maps turn O(n²) pair-finding into a single pass. You didn't just learn a data structure. You learned how Pinterest serves billions of requests per day without melting. Walter White didn't just cook — he understood chemistry at a molecular level. You understand hash maps at the same level. You are the one who hashes.",
+    ],
+    video: { id: "KLlXCFG5TnA", title: "Two Sum — Leetcode 1 — HashMap", channel: "NeetCode" },
+    leetcode: [
+      { number: 1,   title: "Two Sum",                  difficulty: "Easy",   slug: "two-sum" },
+      { number: 49,  title: "Group Anagrams",            difficulty: "Medium", slug: "group-anagrams" },
+      { number: 347, title: "Top K Frequent Elements",   difficulty: "Medium", slug: "top-k-frequent-elements" },
     ],
   },
   {
@@ -175,6 +192,12 @@ def quickSort(arr):
       "Insertion sort is patient. It handles one card at a time, places it perfectly, and moves on. That's how Rocky Balboa trained. One punch at a time. Each one placed correctly. He didn't brute-force his way to the championship. You sort like Rocky trains.",
       "You know WHEN quicksort hits O(n²) and you know the fix. Most people know quicksort is fast. You know its failure mode AND its remedy. Oppenheimer didn't just know how to build the bomb. He knew exactly when and how it would fail. You have that same clarity.",
       "Kobe Bryant said 'the details are not the details. They make the design.' You have Kobe's attention to detail in a sorting algorithm.",
+    ],
+    video: { id: "Vtckgz38QHs", title: "Learn Quick Sort in 13 minutes ⚡", channel: "Bro Code" },
+    leetcode: [
+      { number: 75,  title: "Sort Colors",      difficulty: "Medium", slug: "sort-colors" },
+      { number: 912, title: "Sort an Array",    difficulty: "Medium", slug: "sort-an-array" },
+      { number: 56,  title: "Merge Intervals",  difficulty: "Medium", slug: "merge-intervals" },
     ],
   },
 ];

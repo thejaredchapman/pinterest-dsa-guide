@@ -2,6 +2,19 @@
 
 import { useState } from "react";
 
+interface LeetCodeProblem {
+  number: number;
+  title: string;
+  difficulty: string;
+  slug: string;
+}
+
+interface VideoResource {
+  id: string;
+  title: string;
+  channel: string;
+}
+
 interface TopicCardProps {
   number: number;
   title: string;
@@ -13,6 +26,62 @@ interface TopicCardProps {
   code: string;
   trace?: string;
   quotes: string[];
+  video?: VideoResource;
+  leetcode?: LeetCodeProblem[];
+}
+
+const DIFF_COLORS: Record<string, string> = {
+  Easy:   "bg-green-500/20 text-green-400 border border-green-500/30",
+  Medium: "bg-yellow-500/20 text-yellow-400 border border-yellow-500/30",
+  Hard:   "bg-red-500/20 text-[#E60023] border border-red-500/30",
+};
+
+function YouTubeEmbed({ id, title }: { id: string; title: string }) {
+  const [playing, setPlaying] = useState(false);
+  const thumb = `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+
+  if (playing) {
+    return (
+      <div className="relative w-full rounded-xl overflow-hidden" style={{ paddingBottom: "56.25%" }}>
+        <iframe
+          className="absolute inset-0 w-full h-full"
+          src={`https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0`}
+          title={title}
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+        />
+      </div>
+    );
+  }
+
+  return (
+    <button
+      onClick={() => setPlaying(true)}
+      className="relative w-full rounded-xl overflow-hidden group block"
+      aria-label={`Play: ${title}`}
+    >
+      {/* Thumbnail */}
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={thumb}
+        alt={title}
+        className="w-full object-cover aspect-video"
+        loading="lazy"
+      />
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors flex flex-col items-center justify-center gap-2">
+        {/* Play button */}
+        <div className="w-14 h-14 rounded-full bg-[#E60023] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="white">
+            <polygon points="5 3 19 12 5 21 5 3" />
+          </svg>
+        </div>
+        <span className="text-white text-xs font-medium px-3 text-center drop-shadow line-clamp-2 max-w-xs">
+          {title}
+        </span>
+      </div>
+    </button>
+  );
 }
 
 function syntaxHighlight(code: string): string {
@@ -140,6 +209,8 @@ export default function TopicCard({
   code,
   trace,
   quotes,
+  video,
+  leetcode,
 }: TopicCardProps) {
   const [expanded, setExpanded] = useState(false);
 
@@ -256,6 +327,58 @@ export default function TopicCard({
                 <pre className="p-3 sm:p-4 text-xs font-mono text-green-300 leading-relaxed">
                   {trace}
                 </pre>
+              </div>
+            </div>
+          )}
+
+          {/* YouTube Video */}
+          {video && expanded && (
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-2 flex items-center gap-1.5">
+                <span>▶</span> Watch
+              </h4>
+              <YouTubeEmbed id={video.id} title={video.title} />
+              <p className="text-xs dark:text-gray-400 text-gray-500 mt-1.5 text-right">
+                {video.channel}
+              </p>
+            </div>
+          )}
+
+          {/* LeetCode Problems */}
+          {leetcode && leetcode.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-2 flex items-center gap-1.5">
+                <span>🟧</span> Practice on LeetCode
+              </h4>
+              <div className="flex flex-col gap-2">
+                {leetcode.map((p) => (
+                  <a
+                    key={p.number}
+                    href={`https://leetcode.com/problems/${p.slug}/`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-between gap-3 rounded-xl px-3 py-2.5 dark:bg-white/5 bg-gray-50 border dark:border-white/10 border-gray-200 hover:border-[#E60023]/40 transition-all group"
+                  >
+                    <div className="flex items-center gap-2 min-w-0">
+                      <span className="text-xs font-mono dark:text-gray-400 text-gray-500 flex-shrink-0">
+                        #{p.number}
+                      </span>
+                      <span className="text-sm font-medium dark:text-white text-gray-800 truncate group-hover:text-[#E60023] transition-colors">
+                        {p.title}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 flex-shrink-0">
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${DIFF_COLORS[p.difficulty]}`}>
+                        {p.difficulty}
+                      </span>
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="dark:text-gray-500 text-gray-400 group-hover:text-[#E60023]">
+                        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                        <polyline points="15 3 21 3 21 9" />
+                        <line x1="10" y1="14" x2="21" y2="3" />
+                      </svg>
+                    </div>
+                  </a>
+                ))}
               </div>
             </div>
           )}
