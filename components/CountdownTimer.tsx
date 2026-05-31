@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-// Interview: Tuesday June 3, 2026 — update the hour if you know the exact time
-const INTERVIEW_DATE = new Date("2026-06-03T09:00:00");
+// Interview: Tuesday June 3, 2026 — 3:30 PM PDT (Pacific Daylight Time = UTC-7)
+const INTERVIEW_DATE = new Date("2026-06-03T15:30:00-07:00");
 
 interface TimeLeft {
   days: number;
@@ -104,7 +104,7 @@ export default function CountdownTimer() {
         {urgencyMessage(timeLeft.days)}
       </p>
       <p className="text-center text-xs dark:text-gray-400 text-gray-500">
-        Tuesday · June 3 · Pinterest Interview
+        Tuesday · June 3 · 3:30 PM PST · Pinterest Interview
       </p>
     </div>
   );
