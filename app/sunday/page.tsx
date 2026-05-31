@@ -3,201 +3,590 @@ import TopicCard from "@/components/TopicCard";
 import { ProgressBar } from "@/components/ProgressTracker";
 import { CountdownBadge } from "@/components/CountdownTimer";
 
-const TOPIC_IDS = ["stacks", "queues", "hash-maps", "sorting"];
+const TOPIC_IDS = ["two-sum", "valid-palindrome", "best-time-stock", "left-rotation", "group-anagrams", "ice-cream-parlor", "top-k-frequent", "balanced-brackets", "min-stack", "queue-two-stacks"];
 
 const topics = [
   {
-    number: 5,
-    title: "Stacks",
-    icon: "📚",
-    complexity: { time: "Push/Pop/Peek O(1)", space: "O(n)" },
-    whenToUse: "Most-recently-seen item needed, undo/redo, bracket matching, function call tracking",
-    intuition: `A stack is a pile. You add to the top. You remove from the top. Last in, first out — LIFO.
+    number: 1,
+    title: "Two Sum",
+    icon: "🎯",
+    complexity: { time: "O(n)", space: "O(n)" },
+    whenToUse: "Unsorted array + find pair summing to target → hash map complement lookup",
+    intuition: `Brute force: two nested loops, check every pair. O(n²) — for 10,000 elements that's 100 million comparisons.
 
-Why stacks solve the brackets problem: every time you see an open bracket, push it. When you see a close bracket, the most recent unmatched open bracket is right there on top. Check if they match. If they don't — or the stack is empty — it's invalid. At the end, an empty stack means every opener got a closer.
+The insight: for each number x, the number you need is (target - x) — the complement. Store every number you've seen so far in a hash map keyed by value. For each new number, check if its complement is already in the map. If yes, you're done. If no, store this number.
 
-In Python: list works as a stack. append() to push. pop() to pop. [-1] to peek. All O(1).`,
+One pass. O(n) time, O(n) space.`,
     realWorld: {
-      title: "Browser Back Button & Undo",
-      description: `Browser back button. Every page you visit gets pushed onto a history stack. When you hit back, the most recent page pops off. The page you're on is always the top of the stack.
-
-Ctrl+Z undo. Every action gets pushed to an undo stack. Ctrl+Z pops the most recent action and reverses it. This is why undo goes in reverse chronological order — it's a stack.
-
-Nested code blocks. When Python reads your code and hits a {, it pushes it. When it hits }, it checks that the top matches. This is literally how your code gets parsed — a stack validates every open bracket gets a close.`,
+      title: "Finding Two Items That Fit Your Budget",
+      description: "Shopping with exactly $20 for two items. Walk the shelf once. For each item at price P, the item you need costs $20-P. Check your mental 'prices already seen' list. First match = done. One sweep, no backtracking.",
     },
-    code: `def isBalanced(s):
-    stack = []
-    mapping = {')': '(', '}': '{', ']': '['}
-    open_brackets = set(mapping.values())
-
-    for char in s:
-        if char in open_brackets:
-            stack.append(char)
-        elif char in mapping:
-            if not stack or stack.pop() != mapping[char]:
-                return "NO"
-
-    return "YES" if not stack else "NO"`,
-    trace: `"({[]})"
-char='(' → push → stack=['(']
-char='{' → push → stack=['(', '{']
-char='[' → push → stack=['(', '{', '[']
-char=']' → pop '[' → mapping[']']='[' ✓ → stack=['(', '{']
-char='}' → pop '{' → mapping['}']='{' ✓ → stack=['(']
-char=')' → pop '(' → mapping[')']=​'(' ✓ → stack=[]
-stack empty → "YES" ✓`,
-    quotes: [
-      "You are the call stack. When someone hands you a complex problem, you push the subproblems onto your mental stack, solve the deepest one first, and work your way back up. Hermione Granger had a stack of every spell she'd ever learned and pulled the right one every time. That's you. Hermione energy.",
-      "The call stack doesn't scare you — you ARE the call stack.",
-      "Batman doesn't get confused when situations nest inside each other. Hostage situation inside a burning building inside a blackout inside a city under attack. He pushes each layer onto his mental stack, solves the deepest one, and unwinds. You just described recursion. You just described Batman.",
-      "Thanos has all six Infinity Stones. You have a stack. Yours is more useful.",
+    problems: [
+      {
+        name: "Two Sum",
+        statement: "Given an array of integers nums and a target integer, return the indices of the two numbers that add up to target. Each input has exactly one solution. You may not use the same element twice.",
+        example: "Input:  nums=[2, 7, 11, 15], target=9\nOutput: [0, 1]  (nums[0] + nums[1] = 2 + 7 = 9)",
+      },
     ],
-    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Leetcode 20 — Stack", channel: "NeetCode" },
+    prepQuestions: [
+      "Is the array sorted? (If yes, two pointers O(1) space is possible instead of a hash map)",
+      "Can I use the same element twice? e.g. nums=[3], target=6 — should that return [0,0]?",
+      "Are there duplicate values? Could there be multiple valid pairs?",
+      "What if no solution exists — return empty array, or is a solution guaranteed?",
+      "Are indices 0-based or 1-based in the expected output?",
+    ],
+    code: `def twoSum(nums, target):
+    seen = {}           # maps number → its index in nums
+
+    for i, num in enumerate(nums):
+        complement = target - num   # the value we need to pair with num
+
+        if complement in seen:
+            # found it — complement was stored in an earlier iteration
+            return [seen[complement], i]
+
+        # haven't found the pair yet — store this number for future lookups
+        seen[num] = i
+
+    return []   # problem guarantees a solution, so we never actually reach this`,
+    edgeCases: [
+      { input: "nums=[], target=9", expected: "[]", why: "Empty array — no pairs possible" },
+      { input: "nums=[3], target=6", expected: "[]", why: "Single element — can't pair with itself" },
+      { input: "nums=[3,3], target=6", expected: "[0,1]", why: "Duplicate values — use both, not same index twice" },
+      { input: "nums=[-1,-2,-3,-4], target=-6", expected: "[1,3]", why: "All negatives — complement trick still works" },
+      { input: "nums=[1,2,3,4], target=10", expected: "[]", why: "No valid pair exists" },
+    ],
+    quotes: [
+      "The complement trick inverts the problem. Instead of asking 'does this pair work?' you ask 'have I already seen what I need?' Future Jared stored the answer for Present Jared.",
+      "Jason Bourne doesn't check every person in the room. He maps it once. O(1) retrieval from that point on. That's you with a dict.",
+    ],
+    video: { id: "KLlXCFG5TnA", title: "Two Sum — Leetcode 1 — HashMap", channel: "NeetCode" },
     leetcode: [
-      { number: 20,  title: "Valid Parentheses", difficulty: "Easy",   slug: "valid-parentheses" },
-      { number: 155, title: "Min Stack",          difficulty: "Medium", slug: "min-stack" },
-      { number: 739, title: "Daily Temperatures",  difficulty: "Medium", slug: "daily-temperatures" },
+      { number: 1, title: "Two Sum", difficulty: "Easy", slug: "two-sum" },
+    ],
+  },
+  {
+    number: 2,
+    title: "Valid Palindrome",
+    icon: "🔁",
+    complexity: { time: "O(n)", space: "O(1)" },
+    whenToUse: "Check if string reads same forwards and backwards, ignoring non-alphanumeric characters",
+    intuition: `Naive approach: strip non-alphanumeric characters, lowercase everything, check if string equals its reverse. O(n) time but O(n) space — builds a cleaned copy.
+
+Better: two pointers. Left starts at beginning, right at end. Skip non-alphanumeric characters on each side. Compare characters (case-insensitive). If mismatch → False. If pointers meet → True. O(n) time, O(1) space — never builds the cleaned string.`,
+    realWorld: {
+      title: "Quality Control From Both Ends",
+      description: "A factory inspector checks a production line from both ends simultaneously. Left inspector skips defective (non-alphanumeric) items. Right inspector does the same. They compare. Mismatch = reject. Meet in the middle = symmetric.",
+    },
+    problems: [
+      {
+        name: "Valid Palindrome",
+        statement: "Given a string s, return True if it is a palindrome considering only alphanumeric characters and ignoring case. A palindrome reads the same forward and backward.",
+        example: "Input:  \"A man, a plan, a canal: Panama\"\nOutput: True  (cleaned: \"amanaplanacanalpanama\")\n\nInput:  \"race a car\"\nOutput: False",
+      },
+    ],
+    prepQuestions: [
+      "Do I consider only alphanumeric characters, or all characters including spaces and punctuation?",
+      "Is it case-sensitive? (Is 'A' the same as 'a'?)",
+      "What should I return for an empty string? (Convention: True)",
+      "Can I use extra O(n) space to clean the string, or must I solve it in-place with two pointers?",
+    ],
+    code: `def isPalindrome(s):
+    l, r = 0, len(s) - 1   # two pointers starting at both ends
+
+    while l < r:
+        # skip non-alphanumeric characters from the left
+        while l < r and not s[l].isalnum():
+            l += 1
+        # skip non-alphanumeric characters from the right
+        while l < r and not s[r].isalnum():
+            r -= 1
+
+        # compare the characters (case-insensitive)
+        if s[l].lower() != s[r].lower():
+            return False    # mismatch — not a palindrome
+
+        l += 1   # move both pointers inward
+        r -= 1
+
+    return True  # all characters matched — it's a palindrome`,
+    edgeCases: [
+      { input: 's=""', expected: "True", why: "Empty string — trivially a palindrome by convention" },
+      { input: 's=" "', expected: "True", why: "Only whitespace (non-alphanumeric) — becomes empty after filtering" },
+      { input: 's="a"', expected: "True", why: "Single character is always a palindrome" },
+      { input: 's="Aa"', expected: "True", why: "Case insensitivity — 'A' and 'a' must match" },
+      { input: 's="0P"', expected: "False", why: "Digit vs letter — '0' ≠ 'p'" },
+    ],
+    quotes: [
+      "Two pointers. No extra string. O(1) space. You didn't just solve it — you solved it the right way. Kobe didn't take the easy shot. Neither do you.",
+    ],
+    video: { id: "6lX7x1RcLvg", title: "Solving All Two Pointer Problems — Blind75", channel: "NeetCode" },
+    leetcode: [
+      { number: 125, title: "Valid Palindrome", difficulty: "Easy", slug: "valid-palindrome" },
+    ],
+  },
+  {
+    number: 3,
+    title: "Best Time to Buy & Sell Stock",
+    icon: "📈",
+    complexity: { time: "O(n)", space: "O(1)" },
+    whenToUse: "Single-pass min tracking — maximize gain from one buy before one sell",
+    intuition: `You want to maximize profit = sell_price - buy_price, and buy must come before sell.
+
+Key insight: scan left to right, track the minimum price seen so far (the best buying opportunity up to now). At each price, check if selling today beats the current best profit.
+
+One pass. O(n) time, O(1) space. No nested loops needed.`,
+    realWorld: {
+      title: "Buying Low on a Price History Chart",
+      description: "Scrolling through a product's price history from left to right. You note 'lowest price seen so far.' At each new price, ask: 'If I had bought at the lowest and sold today, would that beat my current best deal?' Update your best when it does. Never need to look backward.",
+    },
+    problems: [
+      {
+        name: "Best Time to Buy and Sell Stock",
+        statement: "Given an array prices where prices[i] is the price on day i, return the maximum profit from ONE buy and ONE sell. You must buy before you sell. If no profit is possible, return 0.",
+        example: "Input:  prices=[7, 1, 5, 3, 6, 4]\nOutput: 5  (buy at 1 on day 2, sell at 6 on day 5)\n\nInput:  prices=[7, 6, 4, 3, 1]\nOutput: 0  (prices only decrease — no profitable trade)",
+      },
+    ],
+    prepQuestions: [
+      "Can I make multiple transactions, or just one buy and one sell?",
+      "What if prices are all the same? (Return 0)",
+      "What if the array has only one price? (Can't trade — return 0)",
+      "Can prices be negative? (Unusual but worth clarifying)",
+      "Do I need to return the profit or the buy/sell days?",
+    ],
+    code: `def maxProfit(prices):
+    if not prices:
+        return 0
+
+    min_price = float('inf')   # cheapest buying opportunity seen so far
+    max_profit = 0             # best profit found so far
+
+    for price in prices:
+        if price < min_price:
+            min_price = price           # found a cheaper buy — update target buy day
+        elif price - min_price > max_profit:
+            max_profit = price - min_price  # selling today beats our current best
+
+    return max_profit`,
+    edgeCases: [
+      { input: "prices=[]", expected: "0", why: "Empty array — no prices to trade" },
+      { input: "prices=[5]", expected: "0", why: "Single price — can't buy and sell on the same day" },
+      { input: "prices=[7,6,5,4,3]", expected: "0", why: "Prices only decrease — never profitable" },
+      { input: "prices=[1,1,1,1]", expected: "0", why: "All same price — profit is always 0" },
+      { input: "prices=[1,2]", expected: "1", why: "Minimum case with profit" },
+    ],
+    quotes: [
+      "One pass. Track the min. Track the best profit. The whole algorithm fits in your head in 10 seconds. Muhammad Ali said 'It's not bragging if you can back it up.' You can back this up.",
+    ],
+    video: { id: "IiDuXLqV6e4", title: "Arrays & Hashing Explained — NeetCode 150 Ep.1", channel: "NeetCode" },
+    leetcode: [
+      { number: 121, title: "Best Time to Buy and Sell Stock", difficulty: "Easy", slug: "best-time-to-buy-and-sell-stock" },
+    ],
+  },
+  {
+    number: 4,
+    title: "Left Rotation",
+    icon: "🔄",
+    complexity: { time: "O(n)", space: "O(n)" },
+    whenToUse: "Rotate an array by d positions — Python slicing makes this a one-liner",
+    intuition: `Left rotating by d: elements from index d onward become the new front, elements 0 to d-1 become the new tail.
+
+Python: arr[d:] + arr[:d].
+
+The modulo trick: if d >= n, rotating n times returns you to the start. Always compute d % n first to handle oversized d.`,
+    realWorld: {
+      title: "Factory Conveyor Belt",
+      description: "A conveyor belt with 5 items. 'Rotate left by 2' means the first 2 items fall off the front and attach to the back. If you rotate 7 positions on a 5-item belt, 7 % 5 = 2 — same as rotating by 2.",
+    },
+    problems: [
+      {
+        name: "Left Rotation",
+        statement: "Given an array arr and integer d, perform d left rotations. Each rotation shifts every element one position to the left, with the first element wrapping to the back. Return the resulting array.",
+        example: "Input:  arr=[1,2,3,4,5], d=2\nOutput: [3,4,5,1,2]  (elements 1,2 rotate to the back)",
+      },
+    ],
+    prepQuestions: [
+      "Is this a left rotation or right rotation? (Confirm direction)",
+      "What if d is larger than the array length? (Use d % n)",
+      "What if d is 0? (Return original array unchanged)",
+      "Should I modify the array in place or return a new one?",
+      "What if the array is empty?",
+    ],
+    code: `def rotateLeft(d, arr):
+    n = len(arr)
+    if n == 0:
+        return arr          # edge case: empty array
+
+    d = d % n               # rotating n times = back to start
+                            # so only the remainder matters
+
+    # arr[d:] = from index d to end   → new front
+    # arr[:d] = from index 0 to d-1   → new tail
+    return arr[d:] + arr[:d]`,
+    edgeCases: [
+      { input: "arr=[], d=3", expected: "[]", why: "Empty array — nothing to rotate" },
+      { input: "arr=[1], d=5", expected: "[1]", why: "Single element — rotation has no effect" },
+      { input: "arr=[1,2,3], d=0", expected: "[1,2,3]", why: "Zero rotation — return unchanged" },
+      { input: "arr=[1,2,3], d=3", expected: "[1,2,3]", why: "d equals n — full rotation, back to start" },
+      { input: "arr=[1,2,3], d=7", expected: "[2,3,1]", why: "d > n — 7 % 3 = 1, same as rotating by 1" },
+    ],
+    quotes: [
+      "The modulo trick is number theory. Rotating n times = full circle = same array. You just applied modular arithmetic in a coding interview without flinching. Vegeta called. Your power level is too damn high.",
+    ],
+    video: { id: "9kdHxplyl5I", title: "Introduction to Sliding Window and 2 Pointers", channel: "take U forward" },
+    leetcode: [
+      { number: 189, title: "Rotate Array", difficulty: "Medium", slug: "rotate-array" },
+    ],
+  },
+  {
+    number: 5,
+    title: "Group Anagrams",
+    icon: "🔡",
+    complexity: { time: "O(n × k log k)", space: "O(n)" },
+    whenToUse: "Group strings by shared property — sorted characters as the hash map key",
+    intuition: `Two strings are anagrams if and only if their sorted characters are identical: "eat" sorted = "aet", "tea" sorted = "aet". Same key!
+
+Use defaultdict(list). For each word, sort its characters to get the canonical key, append the word to that key's bucket. Return all buckets.`,
+    realWorld: {
+      title: "Sorting Mail Into Bins",
+      description: "Letters addressed to 'PARIS', 'PAIRS', 'RAPIS' all contain the same letters. Sort each address alphabetically — all become 'AIPRS'. Same key = same bin. defaultdict(list) is the bin system.",
+    },
+    problems: [
+      {
+        name: "Group Anagrams",
+        statement: "Given an array of strings, group all anagrams together. Anagrams are words containing the same characters in any order. Return the groups in any order.",
+        example: "Input:  [\"eat\",\"tea\",\"tan\",\"ate\",\"nat\",\"bat\"]\nOutput: [[\"eat\",\"tea\",\"ate\"],[\"tan\",\"nat\"],[\"bat\"]]",
+      },
+    ],
+    prepQuestions: [
+      "Are all strings lowercase? What about uppercase and special characters?",
+      "Can the input array be empty? Can individual strings be empty?",
+      "Does the order of groups in the output matter?",
+      "Does the order of strings within each group matter?",
+      "What is the max string length? (Affects whether O(k log k) sort per string is acceptable)",
+    ],
+    code: `from collections import defaultdict
+
+def groupAnagrams(strs):
+    groups = defaultdict(list)   # auto-creates an empty list for any new key
+
+    for word in strs:
+        # sorting the characters gives a canonical key for all anagrams
+        # "eat", "tea", "ate" all sort to "aet" → same key, same bucket
+        key = tuple(sorted(word))   # tuple because lists can't be dict keys
+
+        groups[key].append(word)
+
+    return list(groups.values())`,
+    edgeCases: [
+      { input: "strs=[]", expected: "[]", why: "Empty input — no groups" },
+      { input: 'strs=[""]', expected: '[[""]]', why: "Empty string — its own group (sorts to ())" },
+      { input: 'strs=["",""]', expected: '[["","  "]]', why: "Multiple empty strings — same group" },
+      { input: 'strs=["a"]', expected: '[["a"]]', why: "Single character — one group" },
+      { input: 'strs=["ab","ba","abc"]', expected: '[["ab","ba"],["abc"]]', why: "Only some strings are anagrams" },
+    ],
+    quotes: [
+      "defaultdict(list) is one of the most useful Python tools in interviews. It removes all the 'if key not in d: d[key] = []' boilerplate. Group and go.",
+    ],
+    video: { id: "IiDuXLqV6e4", title: "Arrays & Hashing Explained — NeetCode 150 Ep.1", channel: "NeetCode" },
+    leetcode: [
+      { number: 49, title: "Group Anagrams", difficulty: "Medium", slug: "group-anagrams" },
     ],
   },
   {
     number: 6,
-    title: "Queues",
-    icon: "🚶",
-    complexity: { time: "Enqueue/Dequeue O(1)", space: "O(n)" },
-    whenToUse: "First-in first-out processing, BFS traversal, task scheduling",
-    intuition: `A queue is a line. First in, first out — FIFO.
+    title: "Ice Cream Parlor",
+    icon: "🍦",
+    complexity: { time: "O(n)", space: "O(n)" },
+    whenToUse: "Two Sum variant — find two values summing to budget, return 1-based indices",
+    intuition: `This is Two Sum with 1-based indexing and a story wrapper. Strip away the story: array of prices, budget m, find two prices summing to m, return their 1-based positions.
 
-NEVER use list.pop(0) as a queue. It removes the first element then shifts every other element left — O(n). Use collections.deque — popleft() is O(1). At Pinterest's scale, the difference between O(1) and O(n) per operation is the difference between a working product and a down service.
-
-Queue from two stacks: One stack receives new items. One stack serves items. When the serving stack is empty, dump everything from the incoming stack into it (reversing the order, putting the oldest item on top). Only dump when the serving stack is completely empty — lazy transfer. Each element is transferred exactly once: amortized O(1).`,
+Complement trick: for each price, the complement is (m - price). Check the hash map. If found, return the pair. If not, store.`,
     realWorld: {
-      title: "Pinterest Notification Queue",
-      description: `Pinterest notification queue. When your pin goes viral and you get 47 notifications, they enter a queue in the order they happened. The first like gets delivered first. If Pinterest used list.pop(0) instead of a deque, every notification delivery would scan the whole list. With 100 million users generating notifications simultaneously, that would melt their servers.
-
-Two stacks making a queue — the coffee shop version: Orders come in on the left counter (inbox stack). When the barista is free, they flip the entire left counter onto the right counter (reversing order), and serve from the right. The first order placed is now on top. Only flip when the right counter is empty. That's the lazy transfer.`,
+      title: "Splitting a Restaurant Bill",
+      description: "Two friends splitting a $40 dinner by ordering exactly two items totaling $40. Walk the menu once. For each item, ask: 'Have I already seen an item costing $40 minus this price?' First match wins.",
     },
-    code: `from collections import deque
-
-class MyQueue:
-    def __init__(self):
-        self.stack_in = []
-        self.stack_out = []
-
-    def enqueue(self, x):
-        self.stack_in.append(x)
-
-    def dequeue(self):
-        self._shift_if_needed()
-        return self.stack_out.pop()
-
-    def peek(self):
-        self._shift_if_needed()
-        return self.stack_out[-1]
-
-    def _shift_if_needed(self):
-        if not self.stack_out:
-            while self.stack_in:
-                self.stack_out.append(self.stack_in.pop())`,
-    quotes: [
-      "Two stacks. One queue. FIFO behavior out of two LIFOs. You understand this at the mechanical level. The Predator is hiding in the jungle terrified of your data structure knowledge.",
-      "You know why deque exists, you know why list.pop(0) is a trap, and you can explain it in production terms. Most candidates know WHAT a queue is. You know WHY the implementation detail matters. That's the difference between someone who passed a course and someone who builds systems.",
-      "Goku figured out that combining Kaioken with Super Saiyan was too much for his body. You figured out that combining two stacks is exactly right for a queue. Better than Goku. Confirmed.",
+    problems: [
+      {
+        name: "Ice Cream Parlor",
+        statement: "Sunny and Johnny pool their money (budget m) and buy exactly two ice cream flavors. Given the prices array, find the 1-based indices of the two flavors whose prices sum to exactly m. A solution is always guaranteed.",
+        example: "Input:  m=4, arr=[1, 4, 5, 3, 2]\nOutput: [1, 4]  (price 1 at index 1, price 3 at index 4 → 1+3=4)",
+      },
     ],
-    video: { id: "eanwa3ht3YQ", title: "Implement Queue using Stacks — Leetcode 232", channel: "NeetCode" },
+    prepQuestions: [
+      "Are there duplicate prices? Can I use two elements with the same price value?",
+      "Is the output 0-based or 1-based? (This problem uses 1-based)",
+      "Is a solution always guaranteed, or do I need to handle no-solution?",
+      "Should I return indices in ascending order?",
+    ],
+    code: `def icecreamParlor(m, arr):
+    seen = {}   # maps price → 1-based index
+
+    for i, price in enumerate(arr):
+        complement = m - price   # the other flavor must cost this much
+
+        if complement in seen:
+            # seen[complement] is its 1-based index, i+1 is this item's 1-based index
+            return [seen[complement], i + 1]
+
+        seen[price] = i + 1   # i + 1 converts 0-based enumerate to 1-based
+
+    return []   # guaranteed to find solution, never reached`,
+    edgeCases: [
+      { input: "m=4, arr=[2,2]", expected: "[1,2]", why: "Duplicate prices — must use two different indices" },
+      { input: "m=10, arr=[5,5,5]", expected: "[1,2]", why: "Three identical prices — first valid pair" },
+      { input: "m=6, arr=[1,2,3,4,5]", expected: "[1,5]", why: "Complement is at the end" },
+      { input: "m=3, arr=[1,2]", expected: "[1,2]", why: "Minimum valid array" },
+    ],
+    quotes: [
+      "Ice Cream Parlor is Two Sum wearing a costume. Strip the story: budget m, two prices summing to m, find positions. Hash map complement lookup. You've already solved this.",
+    ],
+    video: { id: "KLlXCFG5TnA", title: "Two Sum — Leetcode 1 — HashMap", channel: "NeetCode" },
     leetcode: [
-      { number: 232, title: "Implement Queue using Stacks", difficulty: "Easy", slug: "implement-queue-using-stacks" },
-      { number: 933, title: "Number of Recent Calls",       difficulty: "Easy", slug: "number-of-recent-calls" },
+      { number: 1, title: "Two Sum", difficulty: "Easy", slug: "two-sum" },
     ],
   },
   {
     number: 7,
-    title: "Hash Maps & Sets",
-    icon: "🗺️",
-    complexity: { time: "Lookup/Insert/Delete O(1) avg", space: "O(n)" },
-    whenToUse: "Duplicate check, pair sum, count occurrences, complement lookup",
-    intuition: `A hash map converts your key into an array index via a math function (the hash function), then jumps straight there. Lookup is O(1) not because it's magic — it's because it's secretly an array access with a math step upfront.
+    title: "Top K Frequent Elements",
+    icon: "📊",
+    complexity: { time: "O(n log k)", space: "O(n)" },
+    whenToUse: "Find k most common items — Counter to count, min-heap of size k to track top",
+    intuition: `Count frequencies with Counter. Maintain a min-heap of size k — smallest-frequency element is always at the top and gets evicted when a more frequent element arrives.
 
-The mental shift: any time you're about to write a nested loop to find pairs or check duplicates, ask: "Can I store what I've seen so far in a hash map and look it up in O(1)?" Almost always yes.
+After processing all elements, the k remaining items in the heap are the top k most frequent.
 
-The complement trick: you want two numbers summing to target. For each number, the complement is target - current. Check if the complement is already in your map. If yes, done. If no, store the current number. One pass. O(n).`,
+Alternative: Counter.most_common(k) — mention it, offer to implement from scratch if required.`,
     realWorld: {
-      title: "Pinterest Pin ID Lookup",
-      description: `Pinterest's pin ID lookup. Every pin has a unique ID. When you click a pin, Pinterest doesn't scan 200 billion pins. It hashes the pin ID to a bucket and retrieves the data directly. That's a hash map at planetary scale. O(1) lookup whether you have 100 pins or 100 billion.
-
-Detecting duplicate usernames on signup. When you try to register "jared_c" on Pinterest, it hashes "jared_c" and checks if that slot is taken. Instant answer. This is why username checks are real-time even with 400 million users.
-
-The complement trick in real life: You're buying two groceries and have $20. Walk through the store once. For each item at price P, check your mental "prices I've already seen" list for the item costing $20 - P. First time you find the complement, done. One pass.`,
+      title: "Pinterest Trending Topics",
+      description: "Pinterest counts every search query. To find top 10 trending searches: count occurrences (Counter), maintain a leaderboard of size 10 (heap). Each new query either enters the leaderboard or gets dropped. Heap size never exceeds 10 — O(n log k) not O(n log n).",
     },
-    code: `def icecreamParlor(m, arr):
-    seen = {}
-
-    for i, price in enumerate(arr):
-        complement = m - price
-
-        if complement in seen:
-            return [seen[complement], i + 1]
-
-        seen[price] = i + 1
-
-    return []`,
-    quotes: [
-      "The complement trick is beautiful because it inverts the problem. Instead of asking 'does this pair work?' you ask 'what do I still need, and have I seen it?' Future Jared set up the answer for Present Jared. The hash map is a message from your past self.",
-      "Jason Bourne doesn't enter a room and check every person for a threat. He scans once, maps the room, and now every threat is retrievable in O(1). That's a hash map. You are Jason Bourne every time you reach for a dict instead of a nested loop.",
-      "Hash maps turn O(n²) pair-finding into a single pass. You didn't just learn a data structure. You learned how Pinterest serves billions of requests per day without melting. Walter White didn't just cook — he understood chemistry at a molecular level. You understand hash maps at the same level. You are the one who hashes.",
+    problems: [
+      {
+        name: "Top K Frequent Elements",
+        statement: "Given an integer array nums and integer k, return the k most frequently occurring elements. The answer may be in any order.",
+        example: "Input:  nums=[1,1,1,2,2,3], k=2\nOutput: [1,2]  (1 appears 3 times, 2 appears 2 times)",
+      },
     ],
-    video: { id: "KLlXCFG5TnA", title: "Two Sum — Leetcode 1 — HashMap", channel: "NeetCode" },
+    prepQuestions: [
+      "Is k always valid — guaranteed between 1 and the number of unique elements?",
+      "What if multiple elements have the same frequency — is any tiebreaker acceptable?",
+      "Can I use Python's Counter directly, or is this a 'no library' question?",
+      "Should I return exactly k elements, even if some have frequency 1?",
+    ],
+    code: `from collections import Counter
+import heapq
+
+def topKFrequent(nums, k):
+    count = Counter(nums)   # count occurrences: {1: 3, 2: 2, 3: 1}
+
+    heap = []   # min-heap of (frequency, element) — size capped at k
+    for num, freq in count.items():
+        heapq.heappush(heap, (freq, num))  # push with frequency as sort key
+        if len(heap) > k:
+            heapq.heappop(heap)   # evict the least frequent element
+
+    # heap now holds exactly the k most frequent elements
+    return [num for freq, num in heap]`,
+    edgeCases: [
+      { input: "nums=[1], k=1", expected: "[1]", why: "Single element, k=1" },
+      { input: "nums=[1,2], k=2", expected: "[1,2]", why: "k equals number of unique elements" },
+      { input: "nums=[1,1,2,2,3], k=2", expected: "[1,2] (any order)", why: "Tie in frequency" },
+      { input: "nums=[4,4,4,4], k=1", expected: "[4]", why: "All same element" },
+    ],
+    quotes: [
+      "Counter + heap. Two data structures, one problem. You know when to reach for each and why. That's Pinterest-level thinking.",
+    ],
+    video: { id: "rrbZz23DWHI", title: "Learn Heaps and Priority Queues — NeetCode 150 Ep.17", channel: "NeetCode" },
     leetcode: [
-      { number: 1,   title: "Two Sum",                  difficulty: "Easy",   slug: "two-sum" },
-      { number: 49,  title: "Group Anagrams",            difficulty: "Medium", slug: "group-anagrams" },
-      { number: 347, title: "Top K Frequent Elements",   difficulty: "Medium", slug: "top-k-frequent-elements" },
+      { number: 347, title: "Top K Frequent Elements", difficulty: "Medium", slug: "top-k-frequent-elements" },
     ],
   },
   {
     number: 8,
-    title: "Sorting",
-    icon: "🔢",
-    complexity: { time: "Insertion O(n²) / Quicksort O(n log n) avg", space: "O(log n)" },
-    whenToUse: "Before applying two pointers, binary search, or when duplicates need to be adjacent",
-    intuition: `Sorting converts an unordered mess into a structure where powerful techniques become possible: two pointers, binary search, duplicate detection. Sorting first is often the opening move on hard problems.
+    title: "Balanced Brackets",
+    icon: "🔗",
+    complexity: { time: "O(n)", space: "O(n)" },
+    whenToUse: "Matching pairs in order — stack holds unmatched openers, closer checks the top",
+    intuition: `A stack is perfect: when you see an opener, push it. When you see a closer, the most recent unmatched opener must be its partner — check the top. If the stack is empty (no opener waiting) or the top is the wrong type → invalid.
 
-Insertion sort: sorting a hand of playing cards. Pick each card and slide it left past any card that's bigger until it's in the right spot. O(n²) generally, O(n) if nearly sorted.
-
-Quicksort: pick a pivot element. Put everything smaller on the left, everything larger on the right. The pivot is in its permanent position. Recurse on both halves. Average O(n log n). Degrades to O(n²) on already-sorted arrays if you always pick the first element as pivot — fix with random pivot.`,
+At the end, an empty stack = everything matched. Non-empty = unclosed openers remain.`,
     realWorld: {
-      title: "Bookshelf & Amazon Price Sort",
-      description: `Insertion sort — sorting photos by date on your phone. Go through photos one at a time. For each new photo, slide it back through already-sorted photos until it's in chronological order. Your processed section is always sorted.
-
-Quicksort — organizing a bookshelf. Pick any book as the pivot. Put alphabetically-before books on the left, alphabetically-after on the right. That book is permanently shelved. Repeat for each pile.
-
-Why sorting unlocks everything: Amazon's "sort by price low to high." Before displaying results, they sort all products once — O(n log n). Now every price query is O(n). Without pre-sorting, every query would scan unsorted data. Sorting is an investment.`,
+      title: "Nesting Dolls Quality Check",
+      description: "Inspecting nesting dolls on a line. Opening a doll = push to stack. Closing a doll = the one on top must be its exact match. Wrong size = fail. End with open dolls on stack = fail. Empty stack at end = every doll opened and closed correctly.",
     },
-    code: `def insertionSort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        while j >= 0 and arr[j] > key:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-    return arr
-
-def quickSort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[0]
-    left  = [x for x in arr[1:] if x < pivot]
-    right = [x for x in arr[1:] if x >= pivot]
-    return quickSort(left) + [pivot] + quickSort(right)`,
-    quotes: [
-      "Insertion sort is patient. It handles one card at a time, places it perfectly, and moves on. That's how Rocky Balboa trained. One punch at a time. Each one placed correctly. He didn't brute-force his way to the championship. You sort like Rocky trains.",
-      "You know WHEN quicksort hits O(n²) and you know the fix. Most people know quicksort is fast. You know its failure mode AND its remedy. Oppenheimer didn't just know how to build the bomb. He knew exactly when and how it would fail. You have that same clarity.",
-      "Kobe Bryant said 'the details are not the details. They make the design.' You have Kobe's attention to detail in a sorting algorithm.",
+    problems: [
+      {
+        name: "Balanced Brackets / Valid Parentheses",
+        statement: "Given a string containing only ()[]{}  determine if it is valid. Valid means every opening bracket has a matching closing bracket of the same type, in the correct order.",
+        example: "Input:  \"({[]})\"\nOutput: True\n\nInput:  \"([)]\"\nOutput: False  (improperly nested)",
+      },
     ],
-    video: { id: "Vtckgz38QHs", title: "Learn Quick Sort in 13 minutes ⚡", channel: "Bro Code" },
+    prepQuestions: [
+      "Does the string contain only bracket characters, or also letters and spaces?",
+      "What should I return for an empty string? (True — trivially balanced)",
+      "Are there multiple bracket types or just parentheses?",
+      "Should I return boolean, 'YES'/'NO', or integer?",
+    ],
+    code: `def isBalanced(s):
+    pairs = {')': '(', ']': '[', '}': '{'}  # closer → required opener
+    stack = []
+
+    for ch in s:
+        if ch in pairs:
+            # closing bracket — check top of stack matches the required opener
+            if not stack or stack.pop() != pairs[ch]:
+                return False   # empty stack OR wrong opener on top
+        else:
+            stack.append(ch)   # opening bracket — push, wait for its closer
+
+    return not stack   # True if empty (all matched), False if openers remain`,
+    trace: `"({[]})"
+ch='(' → push → stack=['(']
+ch='{' → push → stack=['(', '{']
+ch='[' → push → stack=['(', '{', '[']
+ch=']' → pop '[' → pairs[']']='[' ✓ → stack=['(', '{']
+ch='}' → pop '{' → pairs['}']='{' ✓ → stack=['(']
+ch=')' → pop '(' → pairs[')']=​'(' ✓ → stack=[]
+stack empty → True ✓`,
+    edgeCases: [
+      { input: 's=""', expected: "True", why: "Empty string — trivially balanced" },
+      { input: 's="("', expected: "False", why: "Unclosed opener at end" },
+      { input: 's=")"', expected: "False", why: "Closer with no matching opener" },
+      { input: 's="([)]"', expected: "False", why: "Improperly nested — [ and ) don't match" },
+      { input: 's="[[]]"', expected: "True", why: "Properly nested same-type brackets" },
+    ],
+    quotes: [
+      "You are the call stack. You hold the openers until their closers arrive. Every unmatched bracket is a bug waiting to crash production. You catch it before it ships.",
+      "The call stack doesn't scare you — you ARE the call stack.",
+    ],
+    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
     leetcode: [
-      { number: 75,  title: "Sort Colors",      difficulty: "Medium", slug: "sort-colors" },
-      { number: 912, title: "Sort an Array",    difficulty: "Medium", slug: "sort-an-array" },
-      { number: 56,  title: "Merge Intervals",  difficulty: "Medium", slug: "merge-intervals" },
+      { number: 20, title: "Valid Parentheses", difficulty: "Easy", slug: "valid-parentheses" },
+      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
+    ],
+  },
+  {
+    number: 9,
+    title: "Min Stack",
+    icon: "📉",
+    complexity: { time: "O(1) all operations", space: "O(n)" },
+    whenToUse: "Stack that tracks running minimum — maintain a parallel auxiliary stack",
+    intuition: `Challenge: after popping the current minimum, what's the new minimum? A single variable doesn't work — popping might remove the min.
+
+Solution: a second parallel stack (min_stack) that tracks the running minimum at every point. Every push also pushes the current minimum to min_stack. Every pop pops both. min_stack's top = current minimum. Always O(1).`,
+    realWorld: {
+      title: "Temperature Recorder With History",
+      description: "A weather station tracks all temperatures AND always knows the coldest on record. Regular stack = all temperatures. Min stack = coldest temperature AT EACH POINT IN HISTORY. Pop a reading = revert coldest-on-record to what it was before that reading.",
+    },
+    problems: [
+      {
+        name: "Min Stack",
+        statement: "Design a stack supporting push, pop, top, and getMin — all in O(1) time. getMin returns the minimum element currently in the stack, and must stay correct even after pops.",
+        example: "push(-2), push(0), push(-3)\ngetMin() → -3\npop()\ngetMin() → -2  (the -3 was popped, -2 is the new min)",
+      },
+    ],
+    prepQuestions: [
+      "Must all operations be O(1) time, including getMin?",
+      "What happens on pop() or top() of an empty stack? Can I assume valid input?",
+      "Can values be negative? (Yes — matters for trick solutions that store encoded values)",
+    ],
+    code: `class MinStack:
+    def __init__(self):
+        self.stack = []       # main stack — holds actual values
+        self.min_stack = []   # parallel stack — each entry = minimum AT THAT POINT
+
+    def push(self, val):
+        self.stack.append(val)
+        # new minimum = smaller of new value OR current minimum
+        # if min_stack is empty (first push), new value IS the minimum
+        current_min = min(val, self.min_stack[-1] if self.min_stack else val)
+        self.min_stack.append(current_min)
+
+    def pop(self):
+        self.stack.pop()        # remove from main stack
+        self.min_stack.pop()    # remove corresponding minimum snapshot
+
+    def top(self):
+        return self.stack[-1]   # peek main stack
+
+    def getMin(self):
+        return self.min_stack[-1]   # current min always on top of min_stack`,
+    edgeCases: [
+      { input: "push(1), getMin()", expected: "1", why: "Single element is the minimum" },
+      { input: "push(5),push(3),push(7),getMin()", expected: "3", why: "Min is not at top of main stack" },
+      { input: "push(3),push(3),pop(),getMin()", expected: "3", why: "Duplicate minimums — popping one shouldn't lose the min" },
+      { input: "push(-1),push(0),pop(),getMin()", expected: "-1", why: "Negative minimum survives pop of larger value" },
+    ],
+    quotes: [
+      "The auxiliary stack isn't extra work — it's extra information you carry for free. Every push costs you one extra append. In exchange, getMin is always O(1). That trade is always worth it.",
+    ],
+    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
+    leetcode: [
+      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
+    ],
+  },
+  {
+    number: 10,
+    title: "Queue Using Two Stacks",
+    icon: "🚶",
+    complexity: { time: "Amortized O(1)", space: "O(n)" },
+    whenToUse: "FIFO behavior from LIFO structures — lazy transfer gives amortized O(1)",
+    intuition: `One stack reverses order. Two stacks reverse it twice — restoring FIFO order.
+
+stack_in collects new items. stack_out serves items. When stack_out is empty, dump all of stack_in into it — this reversal puts the oldest item on top. Only dump when stack_out is completely empty. Each element is transferred at most once total → amortized O(1).`,
+    realWorld: {
+      title: "Coffee Shop With Two Counters",
+      description: "Orders arrive at the left counter (stack_in). When ready to serve, flip the entire left counter onto the right counter (stack_out), reversing the order. Oldest order is now on top. Only flip when the right counter is empty. Lazy flip = O(1) amortized per coffee.",
+    },
+    problems: [
+      {
+        name: "Implement Queue Using Two Stacks",
+        statement: "Implement a FIFO queue using only two stacks. Support enqueue (add to back), dequeue (remove from front), and peek (read front). Each operation must run in amortized O(1) time.",
+        example: "enqueue(1), enqueue(2), enqueue(3)\ndequeue() → 1\npeek()    → 2\ndequeue() → 2",
+      },
+    ],
+    prepQuestions: [
+      "Must all operations be strictly O(1), or is amortized O(1) acceptable?",
+      "What happens if I call dequeue or peek on an empty queue?",
+      "Do I need to support any operations besides enqueue, dequeue, and peek?",
+    ],
+    code: `class MyQueue:
+    def __init__(self):
+        self.stack_in = []    # receives new items — top = most recently added
+        self.stack_out = []   # serves items — top = oldest item (FIFO order)
+
+    def enqueue(self, x):
+        self.stack_in.append(x)   # always push to inbox — O(1)
+
+    def dequeue(self):
+        self._transfer_if_empty()
+        return self.stack_out.pop()   # oldest item is on top
+
+    def peek(self):
+        self._transfer_if_empty()
+        return self.stack_out[-1]     # read without removing
+
+    def _transfer_if_empty(self):
+        # LAZY: only transfer when outbox is empty
+        # ensures each element is transferred at most once → amortized O(1)
+        if not self.stack_out:
+            while self.stack_in:
+                # pop newest first from inbox, push to outbox
+                # this reversal puts oldest on top of outbox
+                self.stack_out.append(self.stack_in.pop())`,
+    edgeCases: [
+      { input: "enqueue(1), dequeue()", expected: "1", why: "Single enqueue then dequeue" },
+      { input: "enqueue(1),enqueue(2),enqueue(3),dequeue(),dequeue()", expected: "1 then 2", why: "FIFO order across multiple dequeues" },
+      { input: "enqueue(1),dequeue(),enqueue(2),dequeue()", expected: "1 then 2", why: "Interleaved ops — transfer happens twice" },
+    ],
+    quotes: [
+      "Two LIFOs make one FIFO. Two reversals restore the original order. That's not a trick — it's mathematical elegance. The Predator is hiding in the jungle terrified of your data structure knowledge.",
+      "Goku figured out combining Kaioken with Super Saiyan was wrong. You figured out combining two stacks is exactly right for a queue. Better than Goku.",
+    ],
+    video: { id: "eanwa3ht3YQ", title: "Implement Queue using Stacks — Leetcode 232", channel: "NeetCode" },
+    leetcode: [
+      { number: 232, title: "Implement Queue using Stacks", difficulty: "Easy", slug: "implement-queue-using-stacks" },
     ],
   },
 ];
@@ -224,18 +613,18 @@ export default function SundayPage() {
       {/* Day header */}
       <div className="mb-8">
         <h1 className="text-3xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
-          Sunday <span className="text-[#E60023]">—</span> Core Data Structures
+          Day 1 <span className="text-[#E60023]">—</span> Foundation
         </h1>
-        <p className="text-lg text-[#E60023] font-semibold mb-4">June 1</p>
+        <p className="text-lg text-[#E60023] font-semibold mb-4">Sunday · May 31</p>
         <div className="glass-card rounded-2xl p-5">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Today you cover: <strong className="dark:text-white text-gray-900">Stacks</strong>, <strong className="dark:text-white text-gray-900">Queues</strong>, <strong className="dark:text-white text-gray-900">Hash Maps & Sets</strong>, and <strong className="dark:text-white text-gray-900">Sorting</strong>. These are the workhorses of every real system — and the secret weapon behind Pinterest&apos;s feed, notifications, and search.
+            Fluency, not heroics. Arrays, Strings, Hashmaps, Stacks — the patterns in 70%+ of all interviews. Hit every problem with the full ritual: clarify, example, brute force, optimize, code, verify.
           </p>
         </div>
       </div>
 
       {/* Progress tracker */}
-      <ProgressBar topicIds={TOPIC_IDS} label="Sunday Progress" />
+      <ProgressBar topicIds={TOPIC_IDS} label="Day 1 Progress" />
 
       {/* Topic cards */}
       {topics.map((topic) => (
@@ -245,19 +634,19 @@ export default function SundayPage() {
       {/* Bottom nav */}
       <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
-          href="/saturday"
+          href="/"
           className="flex items-center gap-2 text-sm font-medium dark:text-gray-200 text-gray-700 hover:text-[#E60023] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
           </svg>
-          Saturday: Arrays & Pointers
+          Home
         </Link>
         <Link
           href="/monday"
           className="flex items-center gap-2 text-sm font-medium text-[#E60023] hover:text-[#AD081B] transition-colors"
         >
-          Monday: Trees, Heaps, Tries →
+          Day 2: Monday →
         </Link>
       </div>
     </div>

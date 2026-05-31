@@ -11,38 +11,49 @@ function PinterestLogo({ size = 80 }: { size?: number }) {
   );
 }
 
+const ritualSteps = [
+  { title: "Restate", detail: "Say the problem back in your own words before touching the keyboard." },
+  { title: "Clarify", detail: "Input size? Sorted? Duplicates? Negatives? Empty? Return value or in-place?" },
+  { title: "Example", detail: "Walk one concrete input → output by hand. Write it in the editor." },
+  { title: "Brute Force First", detail: "State the naive solution and its Big-O. Don't skip — it shows your reasoning." },
+  { title: "Optimize", detail: "Name the pattern (two pointers, hash map, BFS…). State the better Big-O." },
+  { title: "Code", detail: "Narrate as you type. Clean variable names. No tricks." },
+  { title: "Verify", detail: "Trace your example. Then hit: empty, single element, duplicates, negatives." },
+  { title: "Refactor", detail: "One pass for readability or performance if time allows." },
+];
+
 const scheduleCards = [
   {
-    day: "Saturday",
-    date: "May 30",
-    href: "/saturday",
-    topics: ["Arrays & Strings", "Two Pointers", "Sliding Window", "Linked Lists"],
+    day: "Day 1",
+    date: "Sunday · May 31",
+    href: "/sunday",
+    topics: ["Two Sum", "Valid Palindrome", "Group Anagrams", "Balanced Brackets", "Min Stack", "Queue (2 Stacks)"],
     isToday: true,
     emoji: "📦",
   },
   {
-    day: "Sunday",
-    date: "June 1",
-    href: "/sunday",
-    topics: ["Stacks & Queues", "Hash Maps & Sets", "Sorting"],
-    isToday: false,
-    emoji: "📚",
-  },
-  {
-    day: "Monday",
-    date: "June 2",
+    day: "Day 2",
+    date: "Monday · June 2",
     href: "/monday",
-    topics: ["Trees", "Heaps", "Tries"],
+    topics: ["Reverse Linked List", "Linked List Cycle", "Max Depth", "Validate BST", "Number of Islands", "Fibonacci"],
     isToday: false,
     emoji: "🌳",
   },
   {
-    day: "Tuesday",
-    date: "June 3",
+    day: "Day 3",
+    date: "Tuesday · June 3",
     href: "/tuesday",
-    topics: ["Graphs BFS+DFS", "Recursion+Memoization", "Dynamic Programming"],
+    topics: ["Longest Substring", "Colorful Number", "Mock Interview", "Taper + Logistics"],
     isToday: false,
-    emoji: "🧮",
+    emoji: "🎯",
+  },
+  {
+    day: "Reference",
+    date: "Templates & Idioms",
+    href: "/saturday",
+    topics: ["7 Core Templates", "Python Idioms", "Gotchas", "Complexity Cheat Sheet"],
+    isToday: false,
+    emoji: "📋",
   },
 ];
 
@@ -113,6 +124,31 @@ export default function HomePage() {
           >
             Quick Reference
           </a>
+        </div>
+      </section>
+
+      {/* Interview Ritual */}
+      <section className="mb-16">
+        <h2 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 mb-2 text-center">
+          The Interview Ritual
+        </h2>
+        <p className="text-sm dark:text-gray-300 text-gray-600 text-center mb-6">Run on every single problem, every single time.</p>
+        <div className="glass-card rounded-2xl p-5 sm:p-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {ritualSteps.map((step, i) => (
+              <div key={i} className="flex items-start gap-3">
+                <span className="w-6 h-6 rounded-full bg-[#E60023] text-white text-xs font-bold flex items-center justify-center flex-shrink-0 mt-0.5">{i + 1}</span>
+                <div>
+                  <p className="font-bold text-sm dark:text-white text-gray-900">{step.title}</p>
+                  <p className="text-xs dark:text-gray-300 text-gray-600 mt-0.5">{step.detail}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+          <div className="mt-5 pt-4 border-t dark:border-white/10 border-gray-200">
+            <p className="text-xs font-bold text-[#E60023] uppercase tracking-widest mb-1">Pre-flight checklist (say these out loud)</p>
+            <p className="text-sm dark:text-gray-200 text-gray-700 italic font-medium">clarify → example → complexity → code → test empty / single / dupe / large</p>
+          </div>
         </div>
       </section>
 
