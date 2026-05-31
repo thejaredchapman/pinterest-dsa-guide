@@ -191,7 +191,7 @@ export default function TopicCard({
             <span className="text-xs font-bold uppercase tracking-widest text-[#E60023] mt-1 whitespace-nowrap">
               When to use
             </span>
-            <p className="dark:text-gray-200 text-gray-700 text-sm leading-relaxed border-l-2 border-[#E60023]/40 pl-3">
+            <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed border-l-2 border-[#E60023] pl-3">
               {whenToUse}
             </p>
           </div>
@@ -201,7 +201,7 @@ export default function TopicCard({
             <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-2">
               Plain English Explanation
             </h4>
-            <div className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed space-y-2">
+            <div className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed space-y-2">
               {intuition.split("\n\n").map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
@@ -216,7 +216,7 @@ export default function TopicCard({
                 Real-World Example — {realWorld.title}
               </h4>
             </div>
-            <div className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed space-y-2">
+            <div className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed space-y-2">
               {realWorld.description.split("\n\n").map((para, i) => (
                 <p key={i}>{para}</p>
               ))}
@@ -260,7 +260,7 @@ export default function TopicCard({
                 key={i}
                 className="glass-card rounded-xl p-4 border-l-4 border-[#E60023]"
               >
-                <p className="dark:text-gray-300 text-gray-700 text-sm italic font-medium leading-relaxed">
+                <p className="dark:text-gray-100 text-gray-700 text-sm italic font-medium leading-relaxed">
                   &ldquo;{quote}&rdquo;
                 </p>
               </div>

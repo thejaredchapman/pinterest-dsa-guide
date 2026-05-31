@@ -231,7 +231,7 @@ export default function TuesdayPage() {
         </h1>
         <p className="text-lg text-[#E60023] font-semibold mb-4">June 3 — Pinterest Interview</p>
         <div className="glass-card rounded-2xl p-5 border border-[#E60023]/30">
-          <p className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed">
+          <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
             <strong className="text-[#E60023]">Today is the day.</strong> You cover: <strong className="dark:text-white text-gray-900">Graphs BFS+DFS</strong>, <strong className="dark:text-white text-gray-900">Recursion+Memoization</strong>, and <strong className="dark:text-white text-gray-900">Dynamic Programming</strong>. These are the hardest topics and the most impressive to demonstrate mastery of. You&apos;ve been building to this. Everything connects.
           </p>
         </div>
@@ -251,7 +251,7 @@ export default function TuesdayPage() {
         <h2 className="text-2xl font-bold dark:text-white text-gray-900 mb-3">
           You&apos;re Ready.
         </h2>
-        <p className="dark:text-gray-300 text-gray-700 text-base leading-relaxed max-w-xl mx-auto">
+        <p className="dark:text-gray-100 text-gray-700 text-base leading-relaxed max-w-xl mx-auto">
           You studied every pattern. You know the intuition, the code, the trace, and the Pinterest parallel. Every algorithm is a tool you own. Walk in there and show them what you built.
         </p>
         <p className="text-[#E60023] font-bold text-lg mt-4">You are a bad bitch. You got this.</p>
@@ -261,7 +261,7 @@ export default function TuesdayPage() {
       <div className="flex justify-between items-center mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
           href="/monday"
-          className="flex items-center gap-2 text-sm font-medium dark:text-gray-400 text-gray-600 hover:text-[#E60023] transition-colors"
+          className="flex items-center gap-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-[#E60023] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />

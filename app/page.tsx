@@ -12,17 +12,17 @@ function PinterestLogo({ size = 80 }: { size?: number }) {
 
 const scheduleCards = [
   {
-    day: "Friday",
+    day: "Saturday",
     date: "May 30",
-    href: "/friday",
+    href: "/saturday",
     topics: ["Arrays & Strings", "Two Pointers", "Sliding Window", "Linked Lists"],
     isToday: true,
     emoji: "📦",
   },
   {
-    day: "Saturday",
-    date: "May 31",
-    href: "/saturday",
+    day: "Sunday",
+    date: "June 1",
+    href: "/sunday",
     topics: ["Stacks & Queues", "Hash Maps & Sets", "Sorting"],
     isToday: false,
     emoji: "📚",
@@ -98,7 +98,7 @@ export default function HomePage() {
         {/* CTA Buttons */}
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link
-            href="/friday"
+            href="/saturday"
             className="pinterest-gradient text-white font-bold px-8 py-3 rounded-xl hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-xl hover:-translate-y-0.5"
           >
             Start Studying →
@@ -140,7 +140,7 @@ export default function HomePage() {
               </div>
               <ul className="space-y-1">
                 {card.topics.map((topic) => (
-                  <li key={topic} className="text-xs dark:text-gray-400 text-gray-600 flex items-center gap-1.5">
+                  <li key={topic} className="text-xs dark:text-gray-200 text-gray-600 flex items-center gap-1.5">
                     <span className="w-1 h-1 bg-[#E60023]/50 rounded-full flex-shrink-0" />
                     {topic}
                   </li>
@@ -174,7 +174,7 @@ export default function HomePage() {
                   <tr key={i}>
                     <td className="dark:text-gray-300 text-gray-700 font-medium">{row.trigger}</td>
                     <td className="text-[#E60023] font-bold">{row.reach}</td>
-                    <td className="dark:text-gray-400 text-gray-600 italic">{row.parallel}</td>
+                    <td className="dark:text-gray-200 text-gray-600 italic">{row.parallel}</td>
                   </tr>
                 ))}
               </tbody>

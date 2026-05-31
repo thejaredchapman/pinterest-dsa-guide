@@ -198,7 +198,7 @@ export default function MondayPage() {
         </h1>
         <p className="text-lg text-[#E60023] font-semibold mb-4">June 2</p>
         <div className="glass-card rounded-2xl p-5">
-          <p className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed">
+          <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
             Today you cover: <strong className="dark:text-white text-gray-900">Trees</strong>, <strong className="dark:text-white text-gray-900">Heaps</strong>, and <strong className="dark:text-white text-gray-900">Tries</strong>. These are the structures Pinterest actually runs on — the feed ranking engine, the search autocomplete, and the category taxonomy are all built on exactly what you&apos;re learning today.
           </p>
         </div>
@@ -215,13 +215,13 @@ export default function MondayPage() {
       {/* Bottom nav */}
       <div className="flex justify-between items-center mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
-          href="/saturday"
-          className="flex items-center gap-2 text-sm font-medium dark:text-gray-400 text-gray-600 hover:text-[#E60023] transition-colors"
+          href="/sunday"
+          className="flex items-center gap-2 text-sm font-medium dark:text-gray-300 text-gray-600 hover:text-[#E60023] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
           </svg>
-          Saturday: Stacks & Hash Maps
+          Sunday: Stacks & Hash Maps
         </Link>
         <Link
           href="/tuesday"

@@ -2,183 +2,186 @@ import Link from "next/link";
 import TopicCard from "@/components/TopicCard";
 import { ProgressBar } from "@/components/ProgressTracker";
 
-const TOPIC_IDS = ["stacks", "queues", "hash-maps", "sorting"];
+const TOPIC_IDS = ["arrays-strings", "two-pointers", "sliding-window", "linked-lists"];
 
 const topics = [
   {
-    number: 5,
-    title: "Stacks",
-    icon: "📚",
-    complexity: { time: "Push/Pop/Peek O(1)", space: "O(n)" },
-    whenToUse: "Most-recently-seen item needed, undo/redo, bracket matching, function call tracking",
-    intuition: `A stack is a pile. You add to the top. You remove from the top. Last in, first out — LIFO.
+    number: 1,
+    title: "Arrays & Strings",
+    icon: "📦",
+    complexity: { time: "O(n)", space: "O(1)" },
+    whenToUse: "Index access needed instantly, or you're slicing/rotating a sequence",
+    intuition: `An array is a row of numbered mailboxes. Each mailbox has an address — its index. To find mailbox 47, you don't walk past mailboxes 1 through 46. You go directly to 47. The computer does math on the address, not a search. That's why index access is O(1).
 
-Why stacks solve the brackets problem: every time you see an open bracket, push it. When you see a close bracket, the most recent unmatched open bracket is right there on top. Check if they match. If they don't — or the stack is empty — it's invalid. At the end, an empty stack means every opener got a closer.
+The tradeoff: inserting in the middle means every element after it has to shift one slot right. That's O(n). Slicing (arr[2:5]) makes a brand new copy — it allocates memory and copies. O(n), not O(1).
 
-In Python: list works as a stack. append() to push. pop() to pop. [-1] to peek. All O(1).`,
+The ord() trick: ord(char) - ord('a') converts any lowercase letter to its 0-based index without any if/else chain. 'a' → 0, 'b' → 1, 'z' → 25.
+
+Left rotation insight: After rotating left by d, elements from index d to end become the new front, and elements 0 to d-1 become the new tail: arr[d:] + arr[:d]. Always do d % n first in case d >= n.`,
     realWorld: {
-      title: "Browser Back Button & Undo",
-      description: `Browser back button. Every page you visit gets pushed onto a history stack. When you hit back, the most recent page pops off. The page you're on is always the top of the stack.
-
-Ctrl+Z undo. Every action gets pushed to an undo stack. Ctrl+Z pops the most recent action and reverses it. This is why undo goes in reverse chronological order — it's a stack.
-
-Nested code blocks. When Python reads your code and hits a {, it pushes it. When it hits }, it checks that the top matches. This is literally how your code gets parsed — a stack validates every open bracket gets a close.`,
+      title: "Airplane Seat Assignment",
+      description: `Airplane seat assignment. The gate agent doesn't walk down the aisle counting seats to find 23C. The plane is an array — seat 23C is at a calculated index. It's a direct jump. Pinterest's pin lookup works the same way — every pin has an ID that maps directly to a memory address via hashing. No scanning.`,
     },
-    code: `def isBalanced(s):
-    stack = []
-    mapping = {')': '(', '}': '{', ']': '['}
-    open_brackets = set(mapping.values())
+    code: `def rotateLeft(d, arr):
+    n = len(arr)
+    d = d % n           # handle case where d >= n
+    return arr[d:] + arr[:d]
 
-    for char in s:
-        if char in open_brackets:
-            stack.append(char)
-        elif char in mapping:
-            if not stack or stack.pop() != mapping[char]:
-                return "NO"
-
-    return "YES" if not stack else "NO"`,
-    trace: `"({[]})"
-char='(' → push → stack=['(']
-char='{' → push → stack=['(', '{']
-char='[' → push → stack=['(', '{', '[']
-char=']' → pop '[' → mapping[']']='[' ✓ → stack=['(', '{']
-char='}' → pop '{' → mapping['}']='{' ✓ → stack=['(']
-char=')' → pop '(' → mapping[')']=​'(' ✓ → stack=[]
-stack empty → "YES" ✓`,
+def designerPdfViewer(h, word):
+    max_height = 0
+    for char in word:
+        index = ord(char) - ord('a')
+        max_height = max(max_height, h[index])
+    return max_height * len(word)`,
+    trace: `arr = [1,2,3,4,5], d = 2
+arr[2:] = [3, 4, 5]   ← new front
+arr[:2] = [1, 2]      ← new tail
+result   = [3, 4, 5, 1, 2] ✓`,
     quotes: [
-      "You are the call stack. When someone hands you a complex problem, you push the subproblems onto your mental stack, solve the deepest one first, and work your way back up. Hermione Granger had a stack of every spell she'd ever learned and pulled the right one every time. That's you. Hermione energy.",
-      "The call stack doesn't scare you — you ARE the call stack.",
-      "Batman doesn't get confused when situations nest inside each other. Hostage situation inside a burning building inside a blackout inside a city under attack. He pushes each layer onto his mental stack, solves the deepest one, and unwinds. You just described recursion. You just described Batman.",
-      "Thanos has all six Infinity Stones. You have a stack. Yours is more useful.",
+      "You just turned a rotation that takes O(n × d) into a one-liner. King Kong ain't got shit on you.",
+      "The ord() trick is not a trick — it's number theory. You just used number theory in an interview like it was nothing. Vegeta called. He said your power level is too damn high.",
     ],
   },
   {
-    number: 6,
-    title: "Queues",
-    icon: "🚶",
-    complexity: { time: "Enqueue/Dequeue O(1)", space: "O(n)" },
-    whenToUse: "First-in first-out processing, BFS traversal, task scheduling",
-    intuition: `A queue is a line. First in, first out — FIFO.
+    number: 2,
+    title: "Two Pointers",
+    icon: "👆",
+    complexity: { time: "O(n)", space: "O(1)" },
+    whenToUse: "Sorted array + find a pair or triplet that meets a condition",
+    intuition: `The naive way to find a pair summing to a target is to check every pair — nested loop, O(n²). For 10,000 elements that's 100 million comparisons.
 
-NEVER use list.pop(0) as a queue. It removes the first element then shifts every other element left — O(n). Use collections.deque — popleft() is O(1). At Pinterest's scale, the difference between O(1) and O(n) per operation is the difference between a working product and a down service.
+Two pointers works on a SORTED array. Left pointer at the smallest element, right pointer at the largest. Check their sum:
+- Too small → move left pointer right (get a bigger number)
+- Too big → move right pointer left (get a smaller number)
 
-Queue from two stacks: One stack receives new items. One stack serves items. When the serving stack is empty, dump everything from the incoming stack into it (reversing the order, putting the oldest item on top). Only dump when the serving stack is completely empty — lazy transfer. Each element is transferred exactly once: amortized O(1).`,
+Because the array is sorted, you know exactly which direction to move. You never miss a valid pair. One pass — O(n).`,
     realWorld: {
-      title: "Pinterest Notification Queue",
-      description: `Pinterest notification queue. When your pin goes viral and you get 47 notifications, they enter a queue in the order they happened. The first like gets delivered first. If Pinterest used list.pop(0) instead of a deque, every notification delivery would scan the whole list. With 100 million users generating notifications simultaneously, that would melt their servers.
-
-Two stacks making a queue — the coffee shop version: Orders come in on the left counter (inbox stack). When the barista is free, they flip the entire left counter onto the right counter (reversing order), and serve from the right. The first order placed is now on top. Only flip when the right counter is empty. That's the lazy transfer.`,
+      title: "Price Shopping With a Budget",
+      description: `Price shopping with a budget. You have a sorted price list and exactly $50 to spend on two items. Hold one price tag from the cheapest end and one from the most expensive. Total too high? Put back the expensive item and grab the next cheaper one. Too low? Put back the cheap item. You find the pair in one sweep — not by checking every combination.`,
     },
-    code: `from collections import deque
+    code: `def twoSum(arr, target):
+    left = 0
+    right = len(arr) - 1
 
-class MyQueue:
-    def __init__(self):
-        self.stack_in = []
-        self.stack_out = []
+    while left < right:
+        current_sum = arr[left] + arr[right]
 
-    def enqueue(self, x):
-        self.stack_in.append(x)
-
-    def dequeue(self):
-        self._shift_if_needed()
-        return self.stack_out.pop()
-
-    def peek(self):
-        self._shift_if_needed()
-        return self.stack_out[-1]
-
-    def _shift_if_needed(self):
-        if not self.stack_out:
-            while self.stack_in:
-                self.stack_out.append(self.stack_in.pop())`,
-    quotes: [
-      "Two stacks. One queue. FIFO behavior out of two LIFOs. You understand this at the mechanical level. The Predator is hiding in the jungle terrified of your data structure knowledge.",
-      "You know why deque exists, you know why list.pop(0) is a trap, and you can explain it in production terms. Most candidates know WHAT a queue is. You know WHY the implementation detail matters. That's the difference between someone who passed a course and someone who builds systems.",
-      "Goku figured out that combining Kaioken with Super Saiyan was too much for his body. You figured out that combining two stacks is exactly right for a queue. Better than Goku. Confirmed.",
-    ],
-  },
-  {
-    number: 7,
-    title: "Hash Maps & Sets",
-    icon: "🗺️",
-    complexity: { time: "Lookup/Insert/Delete O(1) avg", space: "O(n)" },
-    whenToUse: "Duplicate check, pair sum, count occurrences, complement lookup",
-    intuition: `A hash map converts your key into an array index via a math function (the hash function), then jumps straight there. Lookup is O(1) not because it's magic — it's because it's secretly an array access with a math step upfront.
-
-The mental shift: any time you're about to write a nested loop to find pairs or check duplicates, ask: "Can I store what I've seen so far in a hash map and look it up in O(1)?" Almost always yes.
-
-The complement trick: you want two numbers summing to target. For each number, the complement is target - current. Check if the complement is already in your map. If yes, done. If no, store the current number. One pass. O(n).`,
-    realWorld: {
-      title: "Pinterest Pin ID Lookup",
-      description: `Pinterest's pin ID lookup. Every pin has a unique ID. When you click a pin, Pinterest doesn't scan 200 billion pins. It hashes the pin ID to a bucket and retrieves the data directly. That's a hash map at planetary scale. O(1) lookup whether you have 100 pins or 100 billion.
-
-Detecting duplicate usernames on signup. When you try to register "jared_c" on Pinterest, it hashes "jared_c" and checks if that slot is taken. Instant answer. This is why username checks are real-time even with 400 million users.
-
-The complement trick in real life: You're buying two groceries and have $20. Walk through the store once. For each item at price P, check your mental "prices I've already seen" list for the item costing $20 - P. First time you find the complement, done. One pass.`,
-    },
-    code: `def icecreamParlor(m, arr):
-    seen = {}
-
-    for i, price in enumerate(arr):
-        complement = m - price
-
-        if complement in seen:
-            return [seen[complement], i + 1]
-
-        seen[price] = i + 1
+        if current_sum == target:
+            return [left + 1, right + 1]    # 1-based indices
+        elif current_sum < target:
+            left += 1       # sum too small → move left right
+        else:
+            right -= 1      # sum too big → move right left
 
     return []`,
     quotes: [
-      "The complement trick is beautiful because it inverts the problem. Instead of asking 'does this pair work?' you ask 'what do I still need, and have I seen it?' Future Jared set up the answer for Present Jared. The hash map is a message from your past self.",
-      "Jason Bourne doesn't enter a room and check every person for a threat. He scans once, maps the room, and now every threat is retrievable in O(1). That's a hash map. You are Jason Bourne every time you reach for a dict instead of a nested loop.",
-      "Hash maps turn O(n²) pair-finding into a single pass. You didn't just learn a data structure. You learned how Pinterest serves billions of requests per day without melting. Walter White didn't just cook — he understood chemistry at a molecular level. You understand hash maps at the same level. You are the one who hashes.",
+      "You just collapsed a 100-million-operation nested loop into a single pass. Godzilla is out there stomping around in O(n²) and you solved it before he took his first step.",
+      "John Wick doesn't reload after every bullet. He's efficient. Precise. Every move eliminates an option. That's two pointers. Every comparison eliminates half the remaining possibilities. You're not coding — you're John Wick with an index.",
+      "Two detectives closing in from opposite ends of a suspect list. They meet in the middle with the answer. You are both detectives at once.",
     ],
   },
   {
-    number: 8,
-    title: "Sorting",
-    icon: "🔢",
-    complexity: { time: "Insertion O(n²) / Quicksort O(n log n) avg", space: "O(log n)" },
-    whenToUse: "Before applying two pointers, binary search, or when duplicates need to be adjacent",
-    intuition: `Sorting converts an unordered mess into a structure where powerful techniques become possible: two pointers, binary search, duplicate detection. Sorting first is often the opening move on hard problems.
+    number: 3,
+    title: "Sliding Window",
+    icon: "🪟",
+    complexity: { time: "O(n)", space: "O(1) fixed / O(k) variable" },
+    whenToUse: `The word "contiguous" appears in the problem. Maximum/minimum of every subarray of size k. Longest/shortest subarray satisfying a condition.`,
+    intuition: `You're looking at a subarray of fixed size k sliding across a larger array. Instead of re-summing k elements each time the window moves — that's O(n × k) — you add the new right element and remove the old left element: new_sum = old_sum + arr[right] - arr[left]. One addition, one subtraction. O(1) per slide.
 
-Insertion sort: sorting a hand of playing cards. Pick each card and slide it left past any card that's bigger until it's in the right spot. O(n²) generally, O(n) if nearly sorted.
-
-Quicksort: pick a pivot element. Put everything smaller on the left, everything larger on the right. The pivot is in its permanent position. Recurse on both halves. Average O(n log n). Degrades to O(n²) on already-sorted arrays if you always pick the first element as pivot — fix with random pivot.`,
+Variable window: the window can shrink. If a duplicate character enters from the right, shrink from the left until the duplicate is gone. Grow when safe, shrink when forced.`,
     realWorld: {
-      title: "Bookshelf & Amazon Price Sort",
-      description: `Insertion sort — sorting photos by date on your phone. Go through photos one at a time. For each new photo, slide it back through already-sorted photos until it's in chronological order. Your processed section is always sorted.
-
-Quicksort — organizing a bookshelf. Pick any book as the pivot. Put alphabetically-before books on the left, alphabetically-after on the right. That book is permanently shelved. Repeat for each pile.
-
-Why sorting unlocks everything: Amazon's "sort by price low to high." Before displaying results, they sort all products once — O(n log n). Now every price query is O(n). Without pre-sorting, every query would scan unsorted data. Sorting is an investment.`,
+      title: "7-Day Stock Price Average",
+      description: `A financial analyst tracking the rolling average closing price adds today's price and subtracts the price from 8 days ago. One operation per day instead of re-summing 7 numbers. Every finance dashboard on earth runs this exact algorithm. Netflix uses the same pattern to track your rolling 3-day average viewing time to decide when to send a "still watching?" notification.`,
     },
-    code: `def insertionSort(arr):
-    for i in range(1, len(arr)):
-        key = arr[i]
-        j = i - 1
-        while j >= 0 and arr[j] > key:
-            arr[j + 1] = arr[j]
-            j -= 1
-        arr[j + 1] = key
-    return arr
+    code: `def maxSumSubarray(arr, k):
+    window_sum = sum(arr[:k])
+    max_sum = window_sum
 
-def quickSort(arr):
-    if len(arr) <= 1:
-        return arr
-    pivot = arr[0]
-    left  = [x for x in arr[1:] if x < pivot]
-    right = [x for x in arr[1:] if x >= pivot]
-    return quickSort(left) + [pivot] + quickSort(right)`,
+    for i in range(k, len(arr)):
+        window_sum += arr[i]        # add new element (right)
+        window_sum -= arr[i - k]    # remove old element (left)
+        max_sum = max(max_sum, window_sum)
+
+    return max_sum
+
+def lengthOfLongestSubstring(s):
+    char_set = set()
+    left = 0
+    max_length = 0
+
+    for right in range(len(s)):
+        while s[right] in char_set:
+            char_set.remove(s[left])
+            left += 1
+        char_set.add(s[right])
+        max_length = max(max_length, right - left + 1)
+
+    return max_length`,
+    trace: `arr = [2, 1, 5, 1, 3, 2], k = 3
+First window [2,1,5] → sum = 8, max = 8
+i=3: +arr[3]=1, -arr[0]=2 → sum = 7, max = 8
+i=4: +arr[4]=3, -arr[1]=1 → sum = 9, max = 9
+i=5: +arr[5]=2, -arr[2]=5 → sum = 6, max = 9
+Answer: 9 ✓`,
     quotes: [
-      "Insertion sort is patient. It handles one card at a time, places it perfectly, and moves on. That's how Rocky Balboa trained. One punch at a time. Each one placed correctly. He didn't brute-force his way to the championship. You sort like Rocky trains.",
-      "You know WHEN quicksort hits O(n²) and you know the fix. Most people know quicksort is fast. You know its failure mode AND its remedy. Oppenheimer didn't just know how to build the bomb. He knew exactly when and how it would fail. You have that same clarity.",
-      "Kobe Bryant said 'the details are not the details. They make the design.' You have Kobe's attention to detail in a sorting algorithm.",
+      "You cut O(n × k) down to O(n) by noticing that only the edges change. Most people don't see the edges. You do. Sherlock Holmes sees the mud on your boot and knows you walked from Hampstead Heath. You see the edge elements and know the whole window. Same energy.",
+      "Neo didn't dodge every bullet in The Matrix by being fast. He saw the pattern and made it irrelevant. You just made O(n × k) irrelevant. You didn't speed it up — you made it not exist anymore.",
+      "Naruto mastered Shadow Clone Jutsu by doing the same thing smarter, not harder. The Shadow Clone of the previous sum is already right there. Use it.",
+    ],
+  },
+  {
+    number: 4,
+    title: "Linked Lists",
+    icon: "🔗",
+    complexity: { time: "Access O(n), Insert O(1)", space: "O(1)" },
+    whenToUse: "Frequent insertions/deletions in middle, or cycle detection problems",
+    intuition: `An array stores elements next to each other in memory — like houses on a numbered street. A linked list stores elements anywhere in memory and connects them with pointers — like a scavenger hunt where each clue tells you where the next clue is.
+
+Pointer order for insertion ALWAYS: (1) new node points to what comes after, THEN (2) previous node points to new node. Do step 2 before step 1 and you've permanently cut the chain.
+
+Floyd's cycle detection: slow pointer moves 1 step, fast pointer moves 2 steps. If there's a loop, fast will lap slow and they'll meet. If the list ends, fast hits None. O(1) space — no visited set needed.`,
+    realWorld: {
+      title: "Music Playlist & Cycle Detection",
+      description: `Music playlist with manual ordering. Each song card has "next song" written on the back. To insert a new track between songs 3 and 4: write "song 4" on the back of the new track FIRST, then change song 3's "next" to the new track. Two pointer redirects. If you reverse the order — change song 3's pointer first — you've lost song 4 forever.
+
+Cycle detection: a rumor spreading through an office. Person A tells B, B tells C, C tells D, D tells B again. Send a slow walker and a fast walker through the chain. If they ever land on the same person, there's a loop — the rumor never dies.`,
+    },
+    code: `def insertNodeAtPosition(llist, data, position):
+    new_node = SinglyLinkedListNode(data)
+
+    if position == 0:
+        new_node.next = llist
+        return new_node
+
+    current = llist
+    for _ in range(position - 1):
+        current = current.next
+
+    new_node.next = current.next    # step 1: save downstream
+    current.next = new_node         # step 2: connect
+
+    return llist
+
+def has_cycle(head):
+    if not head:
+        return False
+    slow = head
+    fast = head
+    while fast and fast.next:
+        slow = slow.next
+        fast = fast.next.next
+        if slow == fast:
+            return True
+    return False`,
+    quotes: [
+      "Floyd's tortoise and hare: two pointers, no extra memory, infinite loop detected. Miles Morales is out there swinging through New York and he STILL couldn't detect a cycle faster than O(1) space. You did it in a while loop and a comparison. That's art.",
+      "The pointer order isn't a trick to memorize — it's physics. Surgeons do this when rerouting blood vessels. Save the downstream connection first, then make the cut. You think like a surgeon.",
+      "Tony Montana said 'The World is Yours.' You don't lose your next pointers. Every node is accounted for. The world and all its next pointers are yours.",
     ],
   },
 ];
 
-export default function SaturdayPage() {
+export default function FridayPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
       {/* Back nav */}
@@ -195,12 +198,12 @@ export default function SaturdayPage() {
       {/* Day header */}
       <div className="mb-8">
         <h1 className="text-4xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
-          Saturday <span className="text-[#E60023]">—</span> Core Data Structures
+          Saturday <span className="text-[#E60023]">—</span> Foundation
         </h1>
-        <p className="text-lg text-[#E60023] font-semibold mb-4">May 31</p>
+        <p className="text-lg text-[#E60023] font-semibold mb-4">May 30</p>
         <div className="glass-card rounded-2xl p-5">
-          <p className="dark:text-gray-300 text-gray-700 text-sm leading-relaxed">
-            Today you cover: <strong className="dark:text-white text-gray-900">Stacks</strong>, <strong className="dark:text-white text-gray-900">Queues</strong>, <strong className="dark:text-white text-gray-900">Hash Maps & Sets</strong>, and <strong className="dark:text-white text-gray-900">Sorting</strong>. These are the workhorses of every real system — and the secret weapon behind Pinterest&apos;s feed, notifications, and search.
+          <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
+            Today you cover the building blocks: <strong className="dark:text-white text-gray-900">Arrays & Strings</strong>, <strong className="dark:text-white text-gray-900">Two Pointers</strong>, <strong className="dark:text-white text-gray-900">Sliding Window</strong>, and <strong className="dark:text-white text-gray-900">Linked Lists</strong>. These patterns appear in 60%+ of all coding interviews. Master them today.
           </p>
         </div>
       </div>
@@ -216,19 +219,19 @@ export default function SaturdayPage() {
       {/* Bottom nav */}
       <div className="flex justify-between items-center mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
-          href="/friday"
+          href="/"
           className="flex items-center gap-2 text-sm font-medium dark:text-gray-400 text-gray-600 hover:text-[#E60023] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
           </svg>
-          Friday: Arrays & Pointers
+          Home
         </Link>
         <Link
-          href="/monday"
+          href="/sunday"
           className="flex items-center gap-2 text-sm font-medium text-[#E60023] hover:text-[#AD081B] transition-colors"
         >
-          Monday: Trees, Heaps, Tries →
+          Sunday: Stacks, Queues, Hash Maps →
         </Link>
       </div>
     </div>
