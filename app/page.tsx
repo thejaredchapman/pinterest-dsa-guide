@@ -76,7 +76,7 @@ export default function HomePage() {
           <PinterestLogo size={80} />
         </div>
 
-        <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold dark:text-white text-gray-900 mb-4 tracking-tight">
+        <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold dark:text-white text-gray-900 mb-4 tracking-tight">
           DSA Interview Prep
         </h1>
 
@@ -117,7 +117,7 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
           Study Schedule
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
           {scheduleCards.map((card) => (
             <Link
               key={card.day}
@@ -156,10 +156,25 @@ export default function HomePage() {
 
       {/* Pattern Table */}
       <section id="patterns" className="mb-16">
-        <h2 className="text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
           Algorithm → Pinterest Connection
         </h2>
-        <div className="glass-card rounded-2xl overflow-hidden">
+
+        {/* Mobile: stacked cards */}
+        <div className="sm:hidden space-y-3">
+          {patternTable.map((row, i) => (
+            <div key={i} className="glass-card rounded-xl p-4">
+              <p className="text-[#E60023] font-bold text-sm mb-1">{row.reach}</p>
+              <p className="dark:text-white text-gray-800 font-medium text-sm mb-1">{row.trigger}</p>
+              {row.parallel !== "—" && (
+                <p className="dark:text-gray-300 text-gray-600 text-xs italic">{row.parallel}</p>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="hidden sm:block glass-card rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full glass-table">
               <thead>
@@ -185,10 +200,25 @@ export default function HomePage() {
 
       {/* Complexity Reference */}
       <section className="mb-16">
-        <h2 className="text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
+        <h2 className="text-xl sm:text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
           Complexity Reference
         </h2>
-        <div className="glass-card rounded-2xl overflow-hidden">
+
+        {/* Mobile: stacked cards */}
+        <div className="sm:hidden space-y-3">
+          {complexityTable.map((row, i) => (
+            <div key={i} className="glass-card rounded-xl p-4">
+              <div className="flex items-center gap-3 mb-1">
+                <span className="text-[#E60023] font-bold font-mono text-base">{row.notation}</span>
+                <span className="dark:text-white text-gray-800 font-semibold text-sm">{row.name}</span>
+              </div>
+              <p className="dark:text-gray-100 text-gray-700 text-xs">{row.meaning}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Desktop: table */}
+        <div className="hidden sm:block glass-card rounded-2xl overflow-hidden">
           <div className="overflow-x-auto">
             <table className="w-full glass-table">
               <thead>

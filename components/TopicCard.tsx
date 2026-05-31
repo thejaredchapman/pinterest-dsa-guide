@@ -151,33 +151,40 @@ export default function TopicCard({
         className="w-full text-left"
         aria-expanded={expanded}
       >
-        <div className="pinterest-gradient p-4 sm:p-5 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-3 sm:gap-4 flex-wrap">
-            {/* Number badge */}
-            <span className="bg-white/20 text-white font-bold text-sm w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0">
-              {number}
-            </span>
-            {/* Icon + Title */}
-            <span className="text-2xl">{icon}</span>
-            <span className="font-bold text-white text-base sm:text-lg">{title}</span>
-            {/* Complexity badges */}
-            <div className="flex gap-2 flex-wrap">
-              <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">
-                Time: {complexity.time}
+        <div className="pinterest-gradient p-4 sm:p-5">
+          <div className="flex items-start justify-between gap-3">
+            {/* Left: number + icon + title + badges */}
+            <div className="flex items-start gap-3 min-w-0 flex-1">
+              {/* Number badge */}
+              <span className="bg-white/20 text-white font-bold text-sm w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                {number}
               </span>
-              <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">
-                Space: {complexity.space}
-              </span>
+              <div className="min-w-0 flex-1">
+                {/* Icon + Title row */}
+                <div className="flex items-center gap-2 mb-2">
+                  <span className="text-xl flex-shrink-0">{icon}</span>
+                  <span className="font-bold text-white text-sm sm:text-base leading-tight">{title}</span>
+                </div>
+                {/* Complexity badges — always wrap naturally */}
+                <div className="flex gap-1.5 flex-wrap">
+                  <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">
+                    ⏱ {complexity.time}
+                  </span>
+                  <span className="bg-white/20 text-white text-xs px-2 py-0.5 rounded-full font-mono">
+                    💾 {complexity.space}
+                  </span>
+                </div>
+              </div>
             </div>
+            {/* Expand/collapse chevron */}
+            <span
+              className={`text-white/70 transition-transform duration-300 flex-shrink-0 mt-1 ${expanded ? "rotate-180" : ""}`}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </span>
           </div>
-          {/* Expand/collapse chevron */}
-          <span
-            className={`text-white/70 transition-transform duration-300 flex-shrink-0 ${expanded ? "rotate-180" : ""}`}
-          >
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <polyline points="6 9 12 15 18 9" />
-            </svg>
-          </span>
         </div>
       </button>
 
@@ -187,8 +194,8 @@ export default function TopicCard({
       >
         <div className="p-4 sm:p-6 space-y-5">
           {/* When to use */}
-          <div className="flex items-start gap-3">
-            <span className="text-xs font-bold uppercase tracking-widest text-[#E60023] mt-1 whitespace-nowrap">
+          <div>
+            <span className="text-xs font-bold uppercase tracking-widest text-[#E60023] block mb-1.5">
               When to use
             </span>
             <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed border-l-2 border-[#E60023] pl-3">
@@ -209,10 +216,10 @@ export default function TopicCard({
           </div>
 
           {/* Real World Example */}
-          <div className="rounded-xl p-4 dark:bg-white/5 bg-[#E60023]/5 border dark:border-white/10 border-[#E60023]/10">
-            <div className="flex items-center gap-2 mb-2">
-              <span className="text-base">🌍</span>
-              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023]">
+          <div className="rounded-xl p-3 sm:p-4 dark:bg-white/5 bg-[#E60023]/5 border dark:border-white/10 border-[#E60023]/10">
+            <div className="flex items-start gap-2 mb-2">
+              <span className="text-base flex-shrink-0">🌍</span>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] leading-tight">
                 Real-World Example — {realWorld.title}
               </h4>
             </div>
@@ -231,7 +238,7 @@ export default function TopicCard({
             <div className="relative">
               <div className="rounded-xl dark:bg-black/60 bg-gray-900 border dark:border-white/10 border-gray-700 overflow-x-auto">
                 <pre
-                  className="p-4 text-xs sm:text-sm font-mono text-gray-200 leading-relaxed"
+                  className="p-3 sm:p-4 text-xs font-mono text-gray-200 leading-relaxed"
                   dangerouslySetInnerHTML={{ __html: syntaxHighlight(code) }}
                 />
               </div>
@@ -246,7 +253,7 @@ export default function TopicCard({
                 Trace
               </h4>
               <div className="rounded-xl dark:bg-black/40 bg-gray-800/90 border dark:border-white/10 border-gray-600 overflow-x-auto">
-                <pre className="p-4 text-xs font-mono text-green-300 leading-relaxed">
+                <pre className="p-3 sm:p-4 text-xs font-mono text-green-300 leading-relaxed">
                   {trace}
                 </pre>
               </div>

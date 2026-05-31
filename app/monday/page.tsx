@@ -193,7 +193,7 @@ export default function MondayPage() {
 
       {/* Day header */}
       <div className="mb-8">
-        <h1 className="text-4xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
+        <h1 className="text-3xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
           Monday <span className="text-[#E60023]">—</span> Advanced Structures
         </h1>
         <p className="text-lg text-[#E60023] font-semibold mb-4">June 2</p>
@@ -213,7 +213,7 @@ export default function MondayPage() {
       ))}
 
       {/* Bottom nav */}
-      <div className="flex justify-between items-center mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
           href="/sunday"
           className="flex items-center gap-2 text-sm font-medium dark:text-gray-200 text-gray-700 hover:text-[#E60023] transition-colors"

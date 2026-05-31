@@ -118,6 +118,15 @@ html {
 .kw-num { color: #60a5fa; }
 .kw-builtin { color: #f59e0b; }
 
+/* Prevent pre blocks from blowing out mobile layout */
+pre {
+  white-space: pre;
+  word-break: normal;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+
 /* Scrollbar */
 ::-webkit-scrollbar {
   width: 6px;
