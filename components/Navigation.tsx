@@ -82,7 +82,7 @@ export default function Navigation() {
                   className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                     pathname === link.href
                       ? "bg-[#E60023] text-white"
-                      : "dark:text-gray-300 text-gray-600 hover:bg-[#E60023]/10 hover:text-[#E60023]"
+                      : "dark:text-gray-100 text-gray-700 hover:bg-[#E60023]/10 hover:text-[#E60023]"
                   }`}
                 >
                   {link.label}
@@ -94,7 +94,7 @@ export default function Navigation() {
             {mounted && (
               <button
                 onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-                className="p-2 rounded-lg dark:text-gray-300 text-gray-600 hover:bg-[#E60023]/10 hover:text-[#E60023] transition-all duration-200 ml-1"
+                className="p-2 rounded-lg dark:text-gray-100 text-gray-700 hover:bg-[#E60023]/10 hover:text-[#E60023] transition-all duration-200 ml-1"
                 aria-label="Toggle theme"
               >
                 {theme === "dark" ? <SunIcon /> : <MoonIcon />}
@@ -103,7 +103,7 @@ export default function Navigation() {
 
             {/* Mobile hamburger */}
             <button
-              className="sm:hidden p-2 rounded-lg dark:text-gray-300 text-gray-600 hover:bg-[#E60023]/10 transition-all"
+              className="sm:hidden p-2 rounded-lg dark:text-gray-100 text-gray-700 hover:bg-[#E60023]/10 transition-all"
               onClick={() => setMobileOpen(!mobileOpen)}
               aria-label="Toggle menu"
             >
@@ -137,7 +137,7 @@ export default function Navigation() {
                   className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
                     pathname === link.href
                       ? "bg-[#E60023] text-white"
-                      : "dark:text-gray-300 text-gray-600 hover:bg-[#E60023]/10 hover:text-[#E60023]"
+                      : "dark:text-gray-100 text-gray-700 hover:bg-[#E60023]/10 hover:text-[#E60023]"
                   }`}
                 >
                   {link.label}

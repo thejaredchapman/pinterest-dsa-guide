@@ -85,7 +85,7 @@ export default function HomePage() {
         </p>
 
         <div className="glass-card rounded-2xl p-6 max-w-2xl mx-auto mb-8">
-          <p className="dark:text-gray-200 text-gray-700 text-base sm:text-lg leading-relaxed italic font-medium">
+          <p className="dark:text-white text-gray-800 text-base sm:text-lg leading-relaxed italic font-medium">
             &ldquo;You are walking into this interview knowing exactly what you are doing. Every pattern here is a tool you own.&rdquo;
           </p>
         </div>
@@ -164,17 +164,17 @@ export default function HomePage() {
             <table className="w-full glass-table">
               <thead>
                 <tr>
-                  <th className="dark:text-gray-200 text-gray-700">When you see...</th>
-                  <th className="dark:text-gray-200 text-gray-700">Reach for...</th>
-                  <th className="dark:text-gray-200 text-gray-700">Pinterest parallel</th>
+                  <th className="dark:text-white text-gray-800 font-bold">When you see...</th>
+                  <th className="dark:text-white text-gray-800 font-bold">Reach for...</th>
+                  <th className="dark:text-white text-gray-800 font-bold">Pinterest parallel</th>
                 </tr>
               </thead>
               <tbody>
                 {patternTable.map((row, i) => (
                   <tr key={i}>
-                    <td className="dark:text-gray-300 text-gray-700 font-medium">{row.trigger}</td>
+                    <td className="dark:text-white text-gray-800 font-medium">{row.trigger}</td>
                     <td className="text-[#E60023] font-bold">{row.reach}</td>
-                    <td className="dark:text-gray-200 text-gray-600 italic">{row.parallel}</td>
+                    <td className="dark:text-gray-100 text-gray-700 italic">{row.parallel}</td>
                   </tr>
                 ))}
               </tbody>
@@ -193,17 +193,17 @@ export default function HomePage() {
             <table className="w-full glass-table">
               <thead>
                 <tr>
-                  <th className="dark:text-gray-200 text-gray-700">Notation</th>
-                  <th className="dark:text-gray-200 text-gray-700">Name</th>
-                  <th className="dark:text-gray-200 text-gray-700">What it means</th>
+                  <th className="dark:text-white text-gray-800 font-bold">Notation</th>
+                  <th className="dark:text-white text-gray-800 font-bold">Name</th>
+                  <th className="dark:text-white text-gray-800 font-bold">What it means</th>
                 </tr>
               </thead>
               <tbody>
                 {complexityTable.map((row, i) => (
                   <tr key={i}>
                     <td className="text-[#E60023] font-bold font-mono text-base">{row.notation}</td>
-                    <td className="dark:text-gray-200 text-gray-800 font-semibold">{row.name}</td>
-                    <td className="dark:text-gray-400 text-gray-600">{row.meaning}</td>
+                    <td className="dark:text-white text-gray-800 font-semibold">{row.name}</td>
+                    <td className="dark:text-gray-100 text-gray-700">{row.meaning}</td>
                   </tr>
                 ))}
               </tbody>

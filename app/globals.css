@@ -7,15 +7,17 @@
 
 /* Light mode body */
 body {
-  background: linear-gradient(135deg, #fff5f5 0%, #ffe8e8 50%, #fff0f0 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #fff0f0 50%, #fff5f5 100%);
   min-height: 100vh;
   font-family: var(--font-jetbrains-mono), 'JetBrains Mono', monospace;
+  color: #111827;
 }
 
 /* Dark mode body */
 .dark body {
   background: linear-gradient(135deg, #0c0004 0%, #1a0009 50%, #0d0005 100%);
   min-height: 100vh;
+  color: #f3f4f6;
 }
 
 html {
@@ -170,11 +172,9 @@ html {
 
 .dark .glass-table td {
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  color: #e5e7eb;
 }
 
 .dark .glass-table th {
-  color: #f3f4f6;
   background: rgba(230, 0, 35, 0.18);
 }
 

@@ -93,7 +93,7 @@ export function ProgressBar({ topicIds, label }: ProgressBarProps) {
             className={`text-xs px-3 py-1 rounded-full font-medium transition-all duration-200 ${
               progress[id]
                 ? "bg-[#E60023] text-white"
-                : "dark:bg-white/10 bg-gray-100 dark:text-gray-300 text-gray-600 hover:bg-[#E60023]/20 hover:text-[#E60023]"
+                : "dark:bg-white/10 bg-gray-100 dark:text-gray-100 text-gray-700 hover:bg-[#E60023]/20 hover:text-[#E60023]"
             }`}
           >
             {progress[id] ? "✓ " : ""}{id.replace(/-/g, " ")}
@@ -119,7 +119,7 @@ export function OverallProgress() {
           style={{ width: `${pct}%` }}
         />
       </div>
-      <span className="text-xs font-bold dark:text-gray-300 text-gray-600 whitespace-nowrap">
+      <span className="text-xs font-bold dark:text-gray-100 text-gray-700 whitespace-nowrap">
         {completed}/{total} topics
       </span>
     </div>

@@ -220,7 +220,7 @@ export default function FridayPage() {
       <div className="flex justify-between items-center mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
           href="/"
-          className="flex items-center gap-2 text-sm font-medium dark:text-gray-400 text-gray-600 hover:text-[#E60023] transition-colors"
+          className="flex items-center gap-2 text-sm font-medium dark:text-gray-200 text-gray-700 hover:text-[#E60023] transition-colors"
         >
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
