@@ -1,6 +1,7 @@
 import Link from "next/link";
 import TopicCard from "@/components/TopicCard";
 import { ProgressBar } from "@/components/ProgressTracker";
+import { CountdownBadge } from "@/components/CountdownTimer";
 
 const TOPIC_IDS = ["stacks", "queues", "hash-maps", "sorting"];
 
@@ -191,6 +192,11 @@ export default function SundayPage() {
         </svg>
         Back to Home
       </Link>
+
+      {/* Countdown badge */}
+      <div className="mb-4">
+        <CountdownBadge />
+      </div>
 
       {/* Day header */}
       <div className="mb-8">

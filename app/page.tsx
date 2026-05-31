@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { OverallProgress } from "@/components/ProgressTracker";
+import CountdownTimer from "@/components/CountdownTimer";
 
 function PinterestLogo({ size = 80 }: { size?: number }) {
   return (
@@ -89,6 +90,9 @@ export default function HomePage() {
             &ldquo;You are walking into this interview knowing exactly what you are doing. Every pattern here is a tool you own.&rdquo;
           </p>
         </div>
+
+        {/* Countdown */}
+        <CountdownTimer />
 
         {/* Overall progress */}
         <div className="max-w-md mx-auto mb-8">
