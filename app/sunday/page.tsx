@@ -3,7 +3,7 @@ import TopicCard from "@/components/TopicCard";
 import { ProgressBar } from "@/components/ProgressTracker";
 import { CountdownBadge } from "@/components/CountdownTimer";
 
-const TOPIC_IDS = ["two-sum", "valid-palindrome", "best-time-stock", "left-rotation", "group-anagrams", "ice-cream-parlor", "top-k-frequent", "balanced-brackets", "min-stack", "queue-two-stacks"];
+const TOPIC_IDS = ["two-sum", "valid-palindrome", "best-time-stock", "left-rotation", "group-anagrams", "ice-cream-parlor", "top-k-frequent"];
 
 const topics = [
   {
@@ -402,193 +402,6 @@ def topKFrequent(nums, k):
       { number: 347, title: "Top K Frequent Elements", difficulty: "Medium", slug: "top-k-frequent-elements" },
     ],
   },
-  {
-    number: 8,
-    title: "Balanced Brackets",
-    icon: "🔗",
-    complexity: { time: "O(n)", space: "O(n)" },
-    whenToUse: "Matching pairs in order — stack holds unmatched openers, closer checks the top",
-    intuition: `A stack is perfect: when you see an opener, push it. When you see a closer, the most recent unmatched opener must be its partner — check the top. If the stack is empty (no opener waiting) or the top is the wrong type → invalid.
-
-At the end, an empty stack = everything matched. Non-empty = unclosed openers remain.`,
-    realWorld: {
-      title: "Nesting Dolls Quality Check",
-      description: "Inspecting nesting dolls on a line. Opening a doll = push to stack. Closing a doll = the one on top must be its exact match. Wrong size = fail. End with open dolls on stack = fail. Empty stack at end = every doll opened and closed correctly.",
-    },
-    problems: [
-      {
-        name: "Balanced Brackets / Valid Parentheses",
-        statement: "Given a string containing only ()[]{}  determine if it is valid. Valid means every opening bracket has a matching closing bracket of the same type, in the correct order.",
-        example: "Input:  \"({[]})\"\nOutput: True\n\nInput:  \"([)]\"\nOutput: False  (improperly nested)",
-      },
-    ],
-    prepQuestions: [
-      "Does the string contain only bracket characters, or also letters and spaces?",
-      "What should I return for an empty string? (True — trivially balanced)",
-      "Are there multiple bracket types or just parentheses?",
-      "Should I return boolean, 'YES'/'NO', or integer?",
-    ],
-    code: `def isBalanced(s):
-    pairs = {')': '(', ']': '[', '}': '{'}  # closer → required opener
-    stack = []
-
-    for ch in s:
-        if ch in pairs:
-            # closing bracket — check top of stack matches the required opener
-            if not stack or stack.pop() != pairs[ch]:
-                return False   # empty stack OR wrong opener on top
-        else:
-            stack.append(ch)   # opening bracket — push, wait for its closer
-
-    return not stack   # True if empty (all matched), False if openers remain`,
-    trace: `"({[]})"
-ch='(' → push → stack=['(']
-ch='{' → push → stack=['(', '{']
-ch='[' → push → stack=['(', '{', '[']
-ch=']' → pop '[' → pairs[']']='[' ✓ → stack=['(', '{']
-ch='}' → pop '{' → pairs['}']='{' ✓ → stack=['(']
-ch=')' → pop '(' → pairs[')']=​'(' ✓ → stack=[]
-stack empty → True ✓`,
-    edgeCases: [
-      { input: 's=""', expected: "True", why: "Empty string — trivially balanced" },
-      { input: 's="("', expected: "False", why: "Unclosed opener at end" },
-      { input: 's=")"', expected: "False", why: "Closer with no matching opener" },
-      { input: 's="([)]"', expected: "False", why: "Improperly nested — [ and ) don't match" },
-      { input: 's="[[]]"', expected: "True", why: "Properly nested same-type brackets" },
-    ],
-    quotes: [
-      "You are the call stack. You hold the openers until their closers arrive. Every unmatched bracket is a bug waiting to crash production. You catch it before it ships.",
-      "The call stack doesn't scare you — you ARE the call stack.",
-    ],
-    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
-    leetcode: [
-      { number: 20, title: "Valid Parentheses", difficulty: "Easy", slug: "valid-parentheses" },
-      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
-    ],
-  },
-  {
-    number: 9,
-    title: "Min Stack",
-    icon: "📉",
-    complexity: { time: "O(1) all operations", space: "O(n)" },
-    whenToUse: "Stack that tracks running minimum — maintain a parallel auxiliary stack",
-    intuition: `Challenge: after popping the current minimum, what's the new minimum? A single variable doesn't work — popping might remove the min.
-
-Solution: a second parallel stack (min_stack) that tracks the running minimum at every point. Every push also pushes the current minimum to min_stack. Every pop pops both. min_stack's top = current minimum. Always O(1).`,
-    realWorld: {
-      title: "Temperature Recorder With History",
-      description: "A weather station tracks all temperatures AND always knows the coldest on record. Regular stack = all temperatures. Min stack = coldest temperature AT EACH POINT IN HISTORY. Pop a reading = revert coldest-on-record to what it was before that reading.",
-    },
-    problems: [
-      {
-        name: "Min Stack",
-        statement: "Design a stack supporting push, pop, top, and getMin — all in O(1) time. getMin returns the minimum element currently in the stack, and must stay correct even after pops.",
-        example: "push(-2), push(0), push(-3)\ngetMin() → -3\npop()\ngetMin() → -2  (the -3 was popped, -2 is the new min)",
-      },
-    ],
-    prepQuestions: [
-      "Must all operations be O(1) time, including getMin?",
-      "What happens on pop() or top() of an empty stack? Can I assume valid input?",
-      "Can values be negative? (Yes — matters for trick solutions that store encoded values)",
-    ],
-    code: `class MinStack:
-    def __init__(self):
-        self.stack = []       # main stack — holds actual values
-        self.min_stack = []   # parallel stack — each entry = minimum AT THAT POINT
-
-    def push(self, val):
-        self.stack.append(val)
-        # new minimum = smaller of new value OR current minimum
-        # if min_stack is empty (first push), new value IS the minimum
-        current_min = min(val, self.min_stack[-1] if self.min_stack else val)
-        self.min_stack.append(current_min)
-
-    def pop(self):
-        self.stack.pop()        # remove from main stack
-        self.min_stack.pop()    # remove corresponding minimum snapshot
-
-    def top(self):
-        return self.stack[-1]   # peek main stack
-
-    def getMin(self):
-        return self.min_stack[-1]   # current min always on top of min_stack`,
-    edgeCases: [
-      { input: "push(1), getMin()", expected: "1", why: "Single element is the minimum" },
-      { input: "push(5),push(3),push(7),getMin()", expected: "3", why: "Min is not at top of main stack" },
-      { input: "push(3),push(3),pop(),getMin()", expected: "3", why: "Duplicate minimums — popping one shouldn't lose the min" },
-      { input: "push(-1),push(0),pop(),getMin()", expected: "-1", why: "Negative minimum survives pop of larger value" },
-    ],
-    quotes: [
-      "The auxiliary stack isn't extra work — it's extra information you carry for free. Every push costs you one extra append. In exchange, getMin is always O(1). That trade is always worth it.",
-    ],
-    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
-    leetcode: [
-      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
-    ],
-  },
-  {
-    number: 10,
-    title: "Queue Using Two Stacks",
-    icon: "🚶",
-    complexity: { time: "Amortized O(1)", space: "O(n)" },
-    whenToUse: "FIFO behavior from LIFO structures — lazy transfer gives amortized O(1)",
-    intuition: `One stack reverses order. Two stacks reverse it twice — restoring FIFO order.
-
-stack_in collects new items. stack_out serves items. When stack_out is empty, dump all of stack_in into it — this reversal puts the oldest item on top. Only dump when stack_out is completely empty. Each element is transferred at most once total → amortized O(1).`,
-    realWorld: {
-      title: "Coffee Shop With Two Counters",
-      description: "Orders arrive at the left counter (stack_in). When ready to serve, flip the entire left counter onto the right counter (stack_out), reversing the order. Oldest order is now on top. Only flip when the right counter is empty. Lazy flip = O(1) amortized per coffee.",
-    },
-    problems: [
-      {
-        name: "Implement Queue Using Two Stacks",
-        statement: "Implement a FIFO queue using only two stacks. Support enqueue (add to back), dequeue (remove from front), and peek (read front). Each operation must run in amortized O(1) time.",
-        example: "enqueue(1), enqueue(2), enqueue(3)\ndequeue() → 1\npeek()    → 2\ndequeue() → 2",
-      },
-    ],
-    prepQuestions: [
-      "Must all operations be strictly O(1), or is amortized O(1) acceptable?",
-      "What happens if I call dequeue or peek on an empty queue?",
-      "Do I need to support any operations besides enqueue, dequeue, and peek?",
-    ],
-    code: `class MyQueue:
-    def __init__(self):
-        self.stack_in = []    # receives new items — top = most recently added
-        self.stack_out = []   # serves items — top = oldest item (FIFO order)
-
-    def enqueue(self, x):
-        self.stack_in.append(x)   # always push to inbox — O(1)
-
-    def dequeue(self):
-        self._transfer_if_empty()
-        return self.stack_out.pop()   # oldest item is on top
-
-    def peek(self):
-        self._transfer_if_empty()
-        return self.stack_out[-1]     # read without removing
-
-    def _transfer_if_empty(self):
-        # LAZY: only transfer when outbox is empty
-        # ensures each element is transferred at most once → amortized O(1)
-        if not self.stack_out:
-            while self.stack_in:
-                # pop newest first from inbox, push to outbox
-                # this reversal puts oldest on top of outbox
-                self.stack_out.append(self.stack_in.pop())`,
-    edgeCases: [
-      { input: "enqueue(1), dequeue()", expected: "1", why: "Single enqueue then dequeue" },
-      { input: "enqueue(1),enqueue(2),enqueue(3),dequeue(),dequeue()", expected: "1 then 2", why: "FIFO order across multiple dequeues" },
-      { input: "enqueue(1),dequeue(),enqueue(2),dequeue()", expected: "1 then 2", why: "Interleaved ops — transfer happens twice" },
-    ],
-    quotes: [
-      "Two LIFOs make one FIFO. Two reversals restore the original order. That's not a trick — it's mathematical elegance. The Predator is hiding in the jungle terrified of your data structure knowledge.",
-      "Goku figured out combining Kaioken with Super Saiyan was wrong. You figured out combining two stacks is exactly right for a queue. Better than Goku.",
-    ],
-    video: { id: "eanwa3ht3YQ", title: "Implement Queue using Stacks — Leetcode 232", channel: "NeetCode" },
-    leetcode: [
-      { number: 232, title: "Implement Queue using Stacks", difficulty: "Easy", slug: "implement-queue-using-stacks" },
-    ],
-  },
 ];
 
 export default function SundayPage() {
@@ -618,7 +431,7 @@ export default function SundayPage() {
         <p className="text-lg text-[#E60023] font-semibold mb-4">Sunday · May 31</p>
         <div className="glass-card rounded-2xl p-5">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Fluency, not heroics. Arrays, Strings, Hashmaps, Stacks — the patterns in 70%+ of all interviews. Hit every problem with the full ritual: clarify, example, brute force, optimize, code, verify.
+            Day 1 focus: Arrays, Strings, and Hashmaps — 7 problems. Master the complement trick, two pointers, one-pass min tracking, and frequency maps. By tonight, write Two Sum, Group Anagrams, and Top K Frequent from memory.
           </p>
         </div>
       </div>

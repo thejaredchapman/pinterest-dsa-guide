@@ -15,6 +15,18 @@ interface VideoResource {
   channel: string;
 }
 
+interface OriginalProblem {
+  name: string;
+  statement: string;
+  example?: string;
+}
+
+interface EdgeCase {
+  input: string;
+  expected: string;
+  why: string;
+}
+
 interface TopicCardProps {
   number: number;
   title: string;
@@ -23,8 +35,11 @@ interface TopicCardProps {
   whenToUse: string;
   intuition: string;
   realWorld: { title: string; description: string };
+  problems?: OriginalProblem[];
+  prepQuestions?: string[];
   code: string;
   trace?: string;
+  edgeCases?: EdgeCase[];
   quotes: string[];
   video?: VideoResource;
   leetcode?: LeetCodeProblem[];
@@ -206,8 +221,11 @@ export default function TopicCard({
   whenToUse,
   intuition,
   realWorld,
+  problems,
+  prepQuestions,
   code,
   trace,
+  edgeCases,
   quotes,
   video,
   leetcode,
@@ -301,6 +319,45 @@ export default function TopicCard({
             </div>
           </div>
 
+          {/* Original Problems */}
+          {problems && problems.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-3 flex items-center gap-1.5">
+                <span>📋</span> The Problems
+              </h4>
+              <div className="space-y-3">
+                {problems.map((p, i) => (
+                  <div key={i} className="rounded-xl p-3 sm:p-4 dark:bg-white/5 bg-white/80 border dark:border-white/10 border-gray-200">
+                    <p className="text-sm font-bold dark:text-white text-gray-900 mb-1.5">{p.name}</p>
+                    <p className="text-sm dark:text-gray-100 text-gray-700 leading-relaxed mb-2">{p.statement}</p>
+                    {p.example && (
+                      <div className="rounded-lg dark:bg-black/40 bg-gray-100 border dark:border-white/10 border-gray-200 overflow-x-auto">
+                        <pre className="p-2.5 text-xs font-mono dark:text-green-300 text-green-700 leading-relaxed">{p.example}</pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Prep Questions */}
+          {prepQuestions && prepQuestions.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-3 flex items-center gap-1.5">
+                <span>🎤</span> Ask Before You Code
+              </h4>
+              <ul className="space-y-2">
+                {prepQuestions.map((q, i) => (
+                  <li key={i} className="flex items-start gap-2 text-sm dark:text-gray-100 text-gray-700">
+                    <span className="text-[#E60023] font-bold flex-shrink-0 mt-0.5">{i + 1}.</span>
+                    <span>{q}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           {/* Code Block */}
           <div>
             <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-2">
@@ -327,6 +384,27 @@ export default function TopicCard({
                 <pre className="p-3 sm:p-4 text-xs font-mono text-green-300 leading-relaxed">
                   {trace}
                 </pre>
+              </div>
+            </div>
+          )}
+
+          {/* Edge Cases */}
+          {edgeCases && edgeCases.length > 0 && (
+            <div>
+              <h4 className="text-xs font-bold uppercase tracking-widest text-[#E60023] mb-3 flex items-center gap-1.5">
+                <span>🧪</span> Edge Cases to Test
+              </h4>
+              <div className="space-y-2">
+                {edgeCases.map((ec, i) => (
+                  <div key={i} className="rounded-xl p-3 dark:bg-white/5 bg-white/70 border dark:border-white/10 border-gray-200">
+                    <div className="flex flex-wrap items-center gap-2 mb-1">
+                      <code className="text-xs font-mono text-[#E60023] bg-[#E60023]/10 px-2 py-0.5 rounded">{ec.input}</code>
+                      <span className="text-xs dark:text-gray-400 text-gray-500">→</span>
+                      <code className="text-xs font-mono dark:text-green-400 text-green-700 bg-green-500/10 px-2 py-0.5 rounded">{ec.expected}</code>
+                    </div>
+                    <p className="text-xs dark:text-gray-300 text-gray-600 italic">{ec.why}</p>
+                  </div>
+                ))}
               </div>
             </div>
           )}

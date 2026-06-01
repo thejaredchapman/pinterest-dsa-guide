@@ -3,9 +3,194 @@ import TopicCard from "@/components/TopicCard";
 import { ProgressBar } from "@/components/ProgressTracker";
 import { CountdownBadge } from "@/components/CountdownTimer";
 
-const TOPIC_IDS = ["reverse-linked-list", "linked-list-cycle", "merge-sorted-lists", "max-depth", "validate-bst", "level-order", "number-of-islands", "snakes-and-ladders", "fibonacci-memo"];
+const TOPIC_IDS = ["balanced-brackets", "min-stack", "queue-two-stacks", "reverse-linked-list", "linked-list-cycle", "merge-sorted-lists", "max-depth"];
 
 const topics = [
+  {
+    number: 8,
+    title: "Balanced Brackets",
+    icon: "🔗",
+    complexity: { time: "O(n)", space: "O(n)" },
+    whenToUse: "Matching pairs in order — stack holds unmatched openers, closer checks the top",
+    intuition: `A stack is perfect: when you see an opener, push it. When you see a closer, the most recent unmatched opener must be its partner — check the top. If the stack is empty (no opener waiting) or the top is the wrong type → invalid.
+
+At the end, an empty stack = everything matched. Non-empty = unclosed openers remain.`,
+    realWorld: {
+      title: "Nesting Dolls Quality Check",
+      description: "Inspecting nesting dolls on a line. Opening a doll = push to stack. Closing a doll = the one on top must be its exact match. Wrong size = fail. End with open dolls on stack = fail. Empty stack at end = every doll opened and closed correctly.",
+    },
+    problems: [
+      {
+        name: "Balanced Brackets / Valid Parentheses",
+        statement: "Given a string containing only ()[]{}  determine if it is valid. Valid means every opening bracket has a matching closing bracket of the same type, in the correct order.",
+        example: "Input:  \"({[]})\"\nOutput: True\n\nInput:  \"([)]\"\nOutput: False  (improperly nested)",
+      },
+    ],
+    prepQuestions: [
+      "Does the string contain only bracket characters, or also letters and spaces?",
+      "What should I return for an empty string? (True — trivially balanced)",
+      "Are there multiple bracket types or just parentheses?",
+      "Should I return boolean, 'YES'/'NO', or integer?",
+    ],
+    code: `def isBalanced(s):
+    pairs = {')': '(', ']': '[', '}': '{'}  # closer → required opener
+    stack = []
+
+    for ch in s:
+        if ch in pairs:
+            # closing bracket — check top of stack matches the required opener
+            if not stack or stack.pop() != pairs[ch]:
+                return False   # empty stack OR wrong opener on top
+        else:
+            stack.append(ch)   # opening bracket — push, wait for its closer
+
+    return not stack   # True if empty (all matched), False if openers remain`,
+    trace: `"({[]})"
+ch='(' → push → stack=['(']
+ch='{' → push → stack=['(', '{']
+ch='[' → push → stack=['(', '{', '[']
+ch=']' → pop '[' → pairs[']']='[' ✓ → stack=['(', '{']
+ch='}' → pop '{' → pairs['}']='{' ✓ → stack=['(']
+ch=')' → pop '(' → pairs[')']=​'(' ✓ → stack=[]
+stack empty → True ✓`,
+    edgeCases: [
+      { input: 's=""', expected: "True", why: "Empty string — trivially balanced" },
+      { input: 's="("', expected: "False", why: "Unclosed opener at end" },
+      { input: 's=")"', expected: "False", why: "Closer with no matching opener" },
+      { input: 's="([)]"', expected: "False", why: "Improperly nested — [ and ) don't match" },
+      { input: 's="[[]]"', expected: "True", why: "Properly nested same-type brackets" },
+    ],
+    quotes: [
+      "You are the call stack. You hold the openers until their closers arrive. Every unmatched bracket is a bug waiting to crash production. You catch it before it ships.",
+      "The call stack doesn't scare you — you ARE the call stack.",
+    ],
+    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
+    leetcode: [
+      { number: 20, title: "Valid Parentheses", difficulty: "Easy", slug: "valid-parentheses" },
+      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
+    ],
+  },
+  {
+    number: 9,
+    title: "Min Stack",
+    icon: "📉",
+    complexity: { time: "O(1) all operations", space: "O(n)" },
+    whenToUse: "Stack that tracks running minimum — maintain a parallel auxiliary stack",
+    intuition: `Challenge: after popping the current minimum, what's the new minimum? A single variable doesn't work — popping might remove the min.
+
+Solution: a second parallel stack (min_stack) that tracks the running minimum at every point. Every push also pushes the current minimum to min_stack. Every pop pops both. min_stack's top = current minimum. Always O(1).`,
+    realWorld: {
+      title: "Temperature Recorder With History",
+      description: "A weather station tracks all temperatures AND always knows the coldest on record. Regular stack = all temperatures. Min stack = coldest temperature AT EACH POINT IN HISTORY. Pop a reading = revert coldest-on-record to what it was before that reading.",
+    },
+    problems: [
+      {
+        name: "Min Stack",
+        statement: "Design a stack supporting push, pop, top, and getMin — all in O(1) time. getMin returns the minimum element currently in the stack, and must stay correct even after pops.",
+        example: "push(-2), push(0), push(-3)\ngetMin() → -3\npop()\ngetMin() → -2  (the -3 was popped, -2 is the new min)",
+      },
+    ],
+    prepQuestions: [
+      "Must all operations be O(1) time, including getMin?",
+      "What happens on pop() or top() of an empty stack? Can I assume valid input?",
+      "Can values be negative? (Yes — matters for trick solutions that store encoded values)",
+    ],
+    code: `class MinStack:
+    def __init__(self):
+        self.stack = []       # main stack — holds actual values
+        self.min_stack = []   # parallel stack — each entry = minimum AT THAT POINT
+
+    def push(self, val):
+        self.stack.append(val)
+        # new minimum = smaller of new value OR current minimum
+        # if min_stack is empty (first push), new value IS the minimum
+        current_min = min(val, self.min_stack[-1] if self.min_stack else val)
+        self.min_stack.append(current_min)
+
+    def pop(self):
+        self.stack.pop()        # remove from main stack
+        self.min_stack.pop()    # remove corresponding minimum snapshot
+
+    def top(self):
+        return self.stack[-1]   # peek main stack
+
+    def getMin(self):
+        return self.min_stack[-1]   # current min always on top of min_stack`,
+    edgeCases: [
+      { input: "push(1), getMin()", expected: "1", why: "Single element is the minimum" },
+      { input: "push(5),push(3),push(7),getMin()", expected: "3", why: "Min is not at top of main stack" },
+      { input: "push(3),push(3),pop(),getMin()", expected: "3", why: "Duplicate minimums — popping one shouldn't lose the min" },
+      { input: "push(-1),push(0),pop(),getMin()", expected: "-1", why: "Negative minimum survives pop of larger value" },
+    ],
+    quotes: [
+      "The auxiliary stack isn't extra work — it's extra information you carry for free. Every push costs you one extra append. In exchange, getMin is always O(1). That trade is always worth it.",
+    ],
+    video: { id: "WTzjTskDFMg", title: "Valid Parentheses — Stack — Leetcode 20", channel: "NeetCode" },
+    leetcode: [
+      { number: 155, title: "Min Stack", difficulty: "Medium", slug: "min-stack" },
+    ],
+  },
+  {
+    number: 10,
+    title: "Queue Using Two Stacks",
+    icon: "🚶",
+    complexity: { time: "Amortized O(1)", space: "O(n)" },
+    whenToUse: "FIFO behavior from LIFO structures — lazy transfer gives amortized O(1)",
+    intuition: `One stack reverses order. Two stacks reverse it twice — restoring FIFO order.
+
+stack_in collects new items. stack_out serves items. When stack_out is empty, dump all of stack_in into it — this reversal puts the oldest item on top. Only dump when stack_out is completely empty. Each element is transferred at most once total → amortized O(1).`,
+    realWorld: {
+      title: "Coffee Shop With Two Counters",
+      description: "Orders arrive at the left counter (stack_in). When ready to serve, flip the entire left counter onto the right counter (stack_out), reversing the order. Oldest order is now on top. Only flip when the right counter is empty. Lazy flip = O(1) amortized per coffee.",
+    },
+    problems: [
+      {
+        name: "Implement Queue Using Two Stacks",
+        statement: "Implement a FIFO queue using only two stacks. Support enqueue (add to back), dequeue (remove from front), and peek (read front). Each operation must run in amortized O(1) time.",
+        example: "enqueue(1), enqueue(2), enqueue(3)\ndequeue() → 1\npeek()    → 2\ndequeue() → 2",
+      },
+    ],
+    prepQuestions: [
+      "Must all operations be strictly O(1), or is amortized O(1) acceptable?",
+      "What happens if I call dequeue or peek on an empty queue?",
+      "Do I need to support any operations besides enqueue, dequeue, and peek?",
+    ],
+    code: `class MyQueue:
+    def __init__(self):
+        self.stack_in = []    # receives new items — top = most recently added
+        self.stack_out = []   # serves items — top = oldest item (FIFO order)
+
+    def enqueue(self, x):
+        self.stack_in.append(x)   # always push to inbox — O(1)
+
+    def dequeue(self):
+        self._transfer_if_empty()
+        return self.stack_out.pop()   # oldest item is on top
+
+    def peek(self):
+        self._transfer_if_empty()
+        return self.stack_out[-1]     # read without removing
+
+    def _transfer_if_empty(self):
+        # LAZY: only transfer when outbox is empty
+        # ensures each element is transferred at most once → amortized O(1)
+        if not self.stack_out:
+            while self.stack_in:
+                self.stack_out.append(self.stack_in.pop())`,
+    edgeCases: [
+      { input: "enqueue(1), dequeue()", expected: "1", why: "Single enqueue then dequeue" },
+      { input: "enqueue(1),enqueue(2),enqueue(3),dequeue(),dequeue()", expected: "1 then 2", why: "FIFO order across multiple dequeues" },
+      { input: "enqueue(1),dequeue(),enqueue(2),dequeue()", expected: "1 then 2", why: "Interleaved ops — transfer happens twice" },
+    ],
+    quotes: [
+      "Two LIFOs make one FIFO. Two reversals restore the original order. That's not a trick — it's mathematical elegance. The Predator is hiding in the jungle terrified of your data structure knowledge.",
+      "Goku figured out combining Kaioken with Super Saiyan was wrong. You figured out combining two stacks is exactly right for a queue. Better than Goku.",
+    ],
+    video: { id: "eanwa3ht3YQ", title: "Implement Queue using Stacks — Leetcode 232", channel: "NeetCode" },
+    leetcode: [
+      { number: 232, title: "Implement Queue using Stacks", difficulty: "Easy", slug: "implement-queue-using-stacks" },
+    ],
+  },
   {
     number: 11,
     title: "Reverse Linked List",
@@ -202,309 +387,6 @@ Base case: if node is None, return 0. Otherwise: 1 + max(depth(left), depth(righ
     video: { id: "jmy0LaGET1I", title: "Binary Tree Traversals — BFS & DFS", channel: "take U forward" },
     leetcode: [{ number: 104, title: "Maximum Depth of Binary Tree", difficulty: "Easy", slug: "maximum-depth-of-binary-tree" }],
   },
-  {
-    number: 15,
-    title: "Validate BST",
-    icon: "✅",
-    complexity: { time: "O(n)", space: "O(h)" },
-    whenToUse: "BST validation — pass inherited min/max bounds down recursion, not just parent comparison",
-    intuition: `Common mistake: only compare node to its direct parent. Wrong — a right-subtree node must be greater than every ancestor, not just its immediate parent.
-
-Fix: pass valid bounds as you recurse. Root bounds: (-inf, +inf). Going left: upper bound tightens to current node's value. Going right: lower bound tightens. Every node must be strictly inside its inherited bounds.`,
-    realWorld: {
-      title: "Access Control Levels",
-      description: "Every manager must have a salary strictly between their skip-level and their direct manager. Checking only direct-parent comparison misses violations from higher up. Bounds propagate downward — each level inherits tighter constraints from its entire ancestry.",
-    },
-    problems: [
-      {
-        name: "Validate Binary Search Tree",
-        statement: "Given the root of a binary tree, determine if it is a valid BST. A valid BST has: left subtree values strictly less than the node, right subtree values strictly greater, and both subtrees are also valid BSTs.",
-        example: "    2\n   / \\\n  1   3    → True\n\n    5\n   / \\\n  1   4\n     / \\\n    3   6  → False  (4 in right subtree of 5 but 4 < 5)",
-      },
-    ],
-    prepQuestions: [
-      "Is this strictly less/greater, or are equal values allowed on one side?",
-      "What about duplicate values?",
-      "What is the range of node values? (Could hit INT_MIN / INT_MAX boundary cases)",
-      "Is the tree guaranteed to be a binary tree, or could there be structural issues?",
-    ],
-    code: `def isValidBST(root):
-    def validate(node, min_val, max_val):
-        if not node:
-            return True   # empty subtree is always valid
-
-        # this node's value must be STRICTLY within inherited bounds
-        if not (min_val < node.val < max_val):
-            return False
-
-        # left subtree: all values must be < node.val (tighten upper bound)
-        # right subtree: all values must be > node.val (tighten lower bound)
-        return (validate(node.left,  min_val,   node.val) and
-                validate(node.right, node.val,  max_val))
-
-    return validate(root, float('-inf'), float('inf'))`,
-    edgeCases: [
-      { input: "root=None", expected: "True", why: "Empty tree is a valid BST" },
-      { input: "root=[1]", expected: "True", why: "Single node is always valid" },
-      { input: "[5,4,6,null,null,3,7]", expected: "False", why: "Node 3 in right subtree of 5 but 3 < 5 — caught by bounds, not parent check" },
-      { input: "[2,2,2]", expected: "False", why: "Duplicates — strictly greater/less means equal is invalid" },
-    ],
-    quotes: [
-      "float('-inf') and float('+inf') as starting bounds — no constraint yet. Every level tightens the bounds. The bounds trick is what separates people who've seen this before from people who figure it out live.",
-    ],
-    video: { id: "s6ATEkipzow", title: "Validate Binary Search Tree — Leetcode 98", channel: "NeetCode" },
-    leetcode: [{ number: 98, title: "Validate Binary Search Tree", difficulty: "Medium", slug: "validate-binary-search-tree" }],
-  },
-  {
-    number: 16,
-    title: "Level Order Traversal",
-    icon: "🌊",
-    complexity: { time: "O(n)", space: "O(n)" },
-    whenToUse: "Process tree level by level — BFS with deque, snapshot queue length per level",
-    intuition: `BFS with a deque processes nodes level by level. The key: at the START of each level, snapshot the queue length — that's exactly how many nodes are on this level. Process that many, collect their values, add their children for the next level.`,
-    realWorld: {
-      title: "Org Chart Floor by Floor",
-      description: "Walk a company org chart floor by floor: CEO on floor 1, all VPs on floor 2, all Directors on floor 3. At the start of each floor, count how many people are on it, process all of them, add their reports to the next floor's list.",
-    },
-    problems: [
-      {
-        name: "Binary Tree Level Order Traversal",
-        statement: "Given the root of a binary tree, return the level order traversal as a list of lists — each inner list contains all node values at that depth, left to right.",
-        example: "Tree:  3\n      / \\\n     9  20\n       /  \\\n      15   7\nOutput: [[3], [9,20], [15,7]]",
-      },
-    ],
-    prepQuestions: [
-      "Return one flat list or a list of lists grouped by level?",
-      "What to return for an empty tree?",
-      "Left to right within each level?",
-      "Iterative BFS or recursive DFS? (BFS with deque is the natural fit)",
-    ],
-    code: `from collections import deque
-
-def levelOrder(root):
-    if not root:
-        return []
-
-    result = []
-    queue = deque([root])
-
-    while queue:
-        level_size = len(queue)   # snapshot: how many nodes on THIS level right now
-        level = []
-
-        for _ in range(level_size):   # process exactly this many nodes
-            node = queue.popleft()
-            level.append(node.val)
-            if node.left:  queue.append(node.left)
-            if node.right: queue.append(node.right)
-
-        result.append(level)   # finished one complete level
-
-    return result`,
-    edgeCases: [
-      { input: "root=None", expected: "[]", why: "Empty tree" },
-      { input: "root=[1]", expected: "[[1]]", why: "Single node — one level" },
-      { input: "Right-skewed: 1→2→3", expected: "[[1],[2],[3]]", why: "Each level has exactly one node" },
-    ],
-    quotes: [
-      "Snapshot the queue length. Process exactly that many. Add children. That's the entire BFS level trick. Every level-by-level tree problem uses this exact pattern.",
-    ],
-    video: { id: "6ZnyEApgFYg", title: "Binary Tree Level Order Traversal — BFS — Leetcode 102", channel: "NeetCode" },
-    leetcode: [{ number: 102, title: "Binary Tree Level Order Traversal", difficulty: "Medium", slug: "binary-tree-level-order-traversal" }],
-  },
-  {
-    number: 17,
-    title: "Number of Islands",
-    icon: "🏝️",
-    complexity: { time: "O(m×n)", space: "O(m×n)" },
-    whenToUse: "Count connected components in a grid — DFS flood-fill each component",
-    intuition: `Scan every cell. When you find a '1' you haven't visited, it's the start of a new island. Run DFS from that cell, marking every connected '1' as '#' (visited in-place). Count how many times you start a fresh DFS.`,
-    realWorld: {
-      title: "Satellite Map Analysis",
-      description: "A satellite image grid. Analyst scans pixel by pixel. Finding unvisited land triggers a flood-fill — paint the entire connected landmass. Count how many times the analyst had to start a new flood-fill.",
-    },
-    problems: [
-      {
-        name: "Number of Islands",
-        statement: "Given an m×n grid of '1's (land) and '0's (water), count the number of islands. An island is a group of '1's connected horizontally or vertically (not diagonally), surrounded by water.",
-        example: "Grid: [[\"1\",\"1\",\"0\"],[\"0\",\"1\",\"0\"],[\"0\",\"0\",\"1\"]]\nOutput: 2",
-      },
-    ],
-    prepQuestions: [
-      "Are diagonal connections considered? (Usually no — only horizontal/vertical)",
-      "Can I modify the grid in place, or should I use a separate visited set?",
-      "Are cells strings ('1'/'0') or integers (1/0)?",
-      "What should I return for an empty grid?",
-      "Could the grid be very deep — should I mention recursion limit?",
-    ],
-    code: `def numIslands(grid):
-    if not grid:
-        return 0
-
-    rows, cols = len(grid), len(grid[0])
-    count = 0
-
-    def dfs(r, c):
-        if r < 0 or r >= rows or c < 0 or c >= cols or grid[r][c] != '1':
-            return
-        grid[r][c] = '#'   # mark visited in-place — won't be '1' so won't revisit
-        dfs(r+1, c); dfs(r-1, c); dfs(r, c+1); dfs(r, c-1)
-
-    for r in range(rows):
-        for c in range(cols):
-            if grid[r][c] == '1':   # unvisited land = new island
-                dfs(r, c)           # flood-fill entire island in one call
-                count += 1
-
-    return count`,
-    edgeCases: [
-      { input: "grid=[]", expected: "0", why: "Empty grid" },
-      { input: "All water: [['0','0'],['0','0']]", expected: "0", why: "No land" },
-      { input: "All land: [['1','1'],['1','1']]", expected: "1", why: "One giant island" },
-      { input: "Single cell: [['1']]", expected: "1", why: "Smallest possible island" },
-      { input: "Diagonal: [['1','0'],['0','1']]", expected: "2", why: "Diagonals don't connect — two separate islands" },
-    ],
-    quotes: [
-      "DFS flood-fill is beautiful: one function call handles the entire island. Find a '1', call dfs, the entire connected island is marked. Count it and move on.",
-      "You found every island and marked every connected cell in a single DFS sweep. You'd fuck Godzilla up — then calmly count the islands he left behind.",
-    ],
-    video: { id: "gCswsDauXPc", title: "Number of Islands — Leetcode 200 — Graphs (Python)", channel: "NeetCode" },
-    leetcode: [{ number: 200, title: "Number of Islands", difficulty: "Medium", slug: "number-of-islands" }],
-  },
-  {
-    number: 18,
-    title: "Snakes and Ladders",
-    icon: "🎲",
-    complexity: { time: "O(n²)", space: "O(n²)" },
-    whenToUse: "Shortest path on a board — BFS where snakes/ladders are teleportations applied after landing",
-    intuition: `Model each square as a graph node. A dice roll from square i connects to squares i+1 through i+6 (apply snake/ladder if applicable). Minimum rolls = shortest path from square 1 to n².
-
-BFS processes squares in order of rolls taken — first time you reach n² is guaranteed to be via the minimum rolls.`,
-    realWorld: {
-      title: "City Navigation With Shortcuts and Detours",
-      description: "Manhattan grid where some intersections have express subways (ladders = jump ahead) or mandatory detours (snakes = forced backward). BFS finds minimum turns to destination accounting for all teleportations.",
-    },
-    problems: [
-      {
-        name: "Snakes and Ladders",
-        statement: "On an n×n board numbered 1 to n² (boustrophedon — alternating direction by row, bottom to top), snakes and ladders teleport you between squares. Each move rolls a dice (1-6). Find the minimum moves to reach n² from square 1. Return -1 if impossible.",
-        example: "If square 2 has a ladder to 15 and square 17 has a snake to 13:\nMinimum rolls to reach n² from square 1",
-      },
-    ],
-    prepQuestions: [
-      "How is the board numbered? (Boustrophedon — alternating left-right/right-left by row, bottom to top)",
-      "If a snake/ladder leads to another snake/ladder, do I follow it again?",
-      "Can I visit the same square twice? (Yes, but BFS ensures no revisit)",
-      "What does -1 mean in the return value?",
-    ],
-    code: `from collections import deque
-
-def snakesAndLadders(board):
-    n = len(board)
-
-    def get_cell(pos):
-        # convert 1-based square to board[row][col]
-        # board numbered bottom-to-top, alternating direction per row
-        pos -= 1
-        row = pos // n
-        col = pos % n
-        if row % 2 == 1:        # odd rows go right-to-left
-            col = n - 1 - col
-        return board[n - 1 - row][col]   # board row 0 = top row, invert
-
-    queue = deque([(1, 0)])   # (square_number, moves_taken)
-    visited = {1}
-
-    while queue:
-        square, moves = queue.popleft()
-        if square == n * n:
-            return moves
-
-        for roll in range(1, 7):
-            next_sq = square + roll
-            if next_sq > n * n:
-                break
-            cell_val = get_cell(next_sq)
-            if cell_val != -1:   # -1 means no snake/ladder
-                next_sq = cell_val
-            if next_sq not in visited:
-                visited.add(next_sq)
-                queue.append((next_sq, moves + 1))
-
-    return -1`,
-    edgeCases: [
-      { input: "No snakes or ladders", expected: "Minimum pure dice rolls", why: "Baseline" },
-      { input: "Ladder from square 2 to n²", expected: "1", why: "One roll and done" },
-      { input: "Snake from n² back to 1", expected: "Longer path required", why: "Trap at the finish line" },
-    ],
-    quotes: [
-      "Snakes and Ladders is BFS shortest path wearing a board game costume. Strip it: nodes are squares, edges are dice rolls, teleportations are conditional redirections. BFS on a graph.",
-    ],
-    video: { id: "6ZnyEApgFYg", title: "Binary Tree Level Order Traversal — BFS", channel: "NeetCode" },
-    leetcode: [{ number: 909, title: "Snakes and Ladders", difficulty: "Medium", slug: "snakes-and-ladders" }],
-  },
-  {
-    number: 19,
-    title: "Fibonacci — Memoization",
-    icon: "🔢",
-    complexity: { time: "O(n)", space: "O(n)" },
-    whenToUse: "Overlapping subproblems — cache results so each unique input is computed once",
-    intuition: `Naive recursion recomputes the same subproblems exponentially. fib(5) calls fib(4) AND fib(3). fib(4) calls fib(3) AGAIN. Every unique value gets recomputed multiple times — O(2ⁿ).
-
-Memoization: before computing fib(n), check the cache. Already there? Return instantly. After computing, store it. Now every unique n is computed exactly once → O(n).`,
-    realWorld: {
-      title: "Counting Staircase Paths",
-      description: "Climbing stairs 1 or 2 steps at a time — how many distinct ways to reach step n? ways(n) = ways(n-1) + ways(n-2). This IS Fibonacci. Without memo: each stair count is recomputed for every path that passes through it. With memo: computed once, retrieved instantly.",
-    },
-    problems: [
-      {
-        name: "Fibonacci with Memoization",
-        statement: "Return F(n) where F(0)=0, F(1)=1, F(n)=F(n-1)+F(n-2). Implement with memoization. This demonstrates DP instinct — recognizing that overlapping subproblems should be cached.",
-        example: "F(6) = 8\nWithout memo: 25 function calls\nWith memo:    11 function calls (each unique n once)",
-      },
-    ],
-    prepQuestions: [
-      "What is F(0)? What is F(1)? (Confirm base cases)",
-      "Is there a maximum n? (Deep n → Python recursion limit — mention it)",
-      "Top-down memoization (cache + recursion) or bottom-up DP (iterative table)?",
-      "Can I use @lru_cache or must I implement the cache manually?",
-    ],
-    code: `def fib(n, memo=None):
-    # memo=None not memo={} — Python creates mutable defaults ONCE at function
-    # definition time, so memo={} would persist state across all calls
-    if memo is None:
-        memo = {}
-
-    if n in memo:      # cache hit — already computed, return instantly
-        return memo[n]
-
-    if n <= 1:         # base cases: F(0)=0, F(1)=1
-        return n
-
-    memo[n] = fib(n-1, memo) + fib(n-2, memo)   # compute and cache
-    return memo[n]
-
-# Python's built-in memoization — mention this as an alternative
-from functools import lru_cache
-
-@lru_cache(maxsize=None)   # maxsize=None = unlimited cache
-def fib_builtin(n):
-    if n <= 1:
-        return n
-    return fib_builtin(n-1) + fib_builtin(n-2)`,
-    edgeCases: [
-      { input: "n=0", expected: "0", why: "Base case" },
-      { input: "n=1", expected: "1", why: "Base case" },
-      { input: "n=2", expected: "1", why: "First non-trivial case" },
-      { input: "n=50", expected: "12586269025", why: "Large n — verify memo avoids exponential blowup" },
-    ],
-    quotes: [
-      "You took O(2ⁿ) — 1 quadrillion calls for n=50 — down to O(n) with a dictionary. Not by changing the algorithm. By adding a cache. That instinct IS dynamic programming.",
-      "Goku went Super Saiyan and you were already there.",
-    ],
-    video: { id: "WRoz58oOO7o", title: "Fibonacci Number — Recursion + Memoization + Tabulation", channel: "take U forward" },
-    leetcode: [{ number: 509, title: "Fibonacci Number", difficulty: "Easy", slug: "fibonacci-number" }],
-  },
 ];
 
 export default function MondayPage() {
@@ -534,7 +416,7 @@ export default function MondayPage() {
         <p className="text-lg text-[#E60023] font-semibold mb-4">Monday · June 2</p>
         <div className="glass-card rounded-2xl p-5">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Linked lists, trees, graphs, recursion. These are the patterns that show recursive thinking and connected-structure traversal. Do the full ritual on every problem. The mock at the end of today is mandatory.
+            Day 2 focus: Stacks, Linked Lists, and Trees — 7 problems. Master bracket matching, the auxiliary min stack, two-stack queue, pointer rewiring, Floyd's cycle detection, and tree recursion. These patterns build on each other. The mock at the end of today is mandatory.
           </p>
         </div>
       </div>
