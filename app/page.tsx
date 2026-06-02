@@ -24,6 +24,14 @@ const ritualSteps = [
 
 const scheduleCards = [
   {
+    day: "Basics",
+    date: "The 60% — do these first",
+    href: "/sunday",
+    topics: ["Two Sum", "Valid Palindrome", "Best Time Stock", "Group Anagrams", "Top K Frequent", "+2 more"],
+    isToday: false,
+    emoji: "⚡",
+  },
+  {
     day: "Day 1",
     date: "Tuesday · June 2 · Today",
     href: "/monday",

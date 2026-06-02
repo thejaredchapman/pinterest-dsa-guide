@@ -426,18 +426,18 @@ export default function SundayPage() {
       {/* Day header */}
       <div className="mb-8">
         <h1 className="text-3xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
-          Day 1 <span className="text-[#E60023]">—</span> Foundation
+          Basics <span className="text-[#E60023]">—</span> The 60%
         </h1>
-        <p className="text-lg text-[#E60023] font-semibold mb-4">Sunday · May 31</p>
-        <div className="glass-card rounded-2xl p-5">
+        <p className="text-lg text-[#E60023] font-semibold mb-4">Arrays · Hash Maps · Two Pointers · Heaps</p>
+        <div className="glass-card rounded-2xl p-5 border border-[#E60023]/20">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Day 1 focus: Arrays, Strings, and Hashmaps — 7 problems. Master the complement trick, two pointers, one-pass min tracking, and frequency maps. By tonight, write Two Sum, Group Anagrams, and Top K Frequent from memory.
+            These 7 problems cover the patterns that appear in ~60% of interviews: the hash map complement trick (Two Sum, Ice Cream Parlor), two pointers (Valid Palindrome), one-pass tracking (Best Time to Buy Stock), array manipulation (Left Rotation), frequency maps (Group Anagrams), and heap-based top-k (Top K Frequent). If you&apos;re pressed for time, nail these first.
           </p>
         </div>
       </div>
 
       {/* Progress tracker */}
-      <ProgressBar topicIds={TOPIC_IDS} label="Day 1 Progress" />
+      <ProgressBar topicIds={TOPIC_IDS} label="Basics Progress" />
 
       {/* Topic cards */}
       {topics.map((topic) => (
@@ -459,7 +459,7 @@ export default function SundayPage() {
           href="/monday"
           className="flex items-center gap-2 text-sm font-medium text-[#E60023] hover:text-[#AD081B] transition-colors"
         >
-          Day 2: Monday →
+          Day 1: Tuesday →
         </Link>
       </div>
     </div>

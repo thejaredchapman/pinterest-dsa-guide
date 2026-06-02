@@ -40,6 +40,7 @@ function MoonIcon() {
 
 const navLinks = [
   { href: "/", label: "Home" },
+  { href: "/sunday", label: "Basics" },
   { href: "/monday", label: "Day 1" },
   { href: "/tuesday", label: "Day 2" },
   { href: "/wednesday", label: "Day 3" },

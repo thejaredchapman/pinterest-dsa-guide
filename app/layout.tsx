@@ -3,6 +3,7 @@ import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import Navigation from "@/components/Navigation";
+import PomodoroTimer from "@/components/PomodoroTimer";
 
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-jetbrains-mono",
@@ -12,7 +13,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "Pinterest DSA Interview Guide",
-  description: "A complete DSA study guide for Jared's Pinterest interview — Tuesday June 3",
+  description: "A complete DSA study guide for Jared's Pinterest interview — Friday June 5",
 };
 
 export default function RootLayout({
@@ -32,6 +33,7 @@ export default function RootLayout({
           <main className="pt-16">
             {children}
           </main>
+          <PomodoroTimer />
         </ThemeProvider>
       </body>
     </html>
