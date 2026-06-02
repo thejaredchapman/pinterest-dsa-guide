@@ -411,18 +411,18 @@ export default function MondayPage() {
       {/* Day header */}
       <div className="mb-8">
         <h1 className="text-3xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
-          Day 2 <span className="text-[#E60023]">—</span> Depth
+          Day 1 <span className="text-[#E60023]">—</span> Foundations
         </h1>
-        <p className="text-lg text-[#E60023] font-semibold mb-4">Monday · June 2</p>
+        <p className="text-lg text-[#E60023] font-semibold mb-4">Tuesday · June 2 · Today</p>
         <div className="glass-card rounded-2xl p-5">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Day 2 focus: Stacks, Linked Lists, and Trees — 7 problems. Master bracket matching, the auxiliary min stack, two-stack queue, pointer rewiring, Floyd's cycle detection, and tree recursion. These patterns build on each other. The mock at the end of today is mandatory.
+            Day 1 focus: Stacks, Linked Lists, and Trees — 7 problems. Master bracket matching, the auxiliary min stack, two-stack queue, pointer rewiring, Floyd&apos;s cycle detection, and tree recursion. These are your foundation patterns. Everything else builds on them. The mock at the end of today is mandatory.
           </p>
         </div>
       </div>
 
       {/* Progress tracker */}
-      <ProgressBar topicIds={TOPIC_IDS} label="Day 2 Progress" />
+      <ProgressBar topicIds={TOPIC_IDS} label="Day 1 Progress" />
 
       {/* Topic cards */}
       {topics.map((topic) => (
@@ -430,21 +430,12 @@ export default function MondayPage() {
       ))}
 
       {/* Bottom nav */}
-      <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
-        <Link
-          href="/sunday"
-          className="flex items-center gap-2 text-sm font-medium dark:text-gray-200 text-gray-700 hover:text-[#E60023] transition-colors"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <polyline points="15 18 9 12 15 6" />
-          </svg>
-          Day 1: Sunday
-        </Link>
+      <div className="flex justify-end mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
         <Link
           href="/tuesday"
           className="flex items-center gap-2 text-sm font-medium text-[#E60023] hover:text-[#AD081B] transition-colors"
         >
-          Day 3: Tuesday →
+          Day 2: Wednesday →
         </Link>
       </div>
     </div>

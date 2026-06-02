@@ -110,7 +110,7 @@ export default function App() {
               <div className="hero-meta">
                 <span className="hero-badge">🎯 Target: Pinterest SWE</span>
                 <span className="hero-badge">🐍 Python 3</span>
-                <span className="hero-badge">📅 May 30 – June 3</span>
+                <span className="hero-badge">📅 June 2 – June 6</span>
                 <span className="hero-badge">13 Topics</span>
               </div>
             </div>

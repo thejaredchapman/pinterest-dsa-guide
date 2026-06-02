@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 
-// Interview: Tuesday June 3, 2026 — 3:30 PM PDT (Pacific Daylight Time = UTC-7)
-const INTERVIEW_DATE = new Date("2026-06-03T15:30:00-07:00");
+// Interview: Friday June 5, 2026 — 3:30 PM CST (Central Standard Time = UTC-6)
+const INTERVIEW_DATE = new Date("2026-06-05T15:30:00-06:00");
 
 interface TimeLeft {
   days: number;
@@ -26,7 +26,8 @@ function getTimeLeft(): TimeLeft {
 }
 
 function urgencyMessage(days: number): string {
-  if (days >= 3) return "You have time. Use it well.";
+  if (days >= 4) return "Four days. Build the reps. Earn the confidence.";
+  if (days === 3) return "Three days left. Depth over breadth.";
   if (days === 2) return "Two days. Every rep counts.";
   if (days === 1) return "Tomorrow is the day. Sleep tonight.";
   return "Today is the day. You are ready.";
@@ -104,7 +105,7 @@ export default function CountdownTimer() {
         {urgencyMessage(timeLeft.days)}
       </p>
       <p className="text-center text-xs dark:text-gray-400 text-gray-500">
-        Tuesday · June 3 · 3:30 PM PST · Pinterest Interview
+        Friday · June 5 · 3:30 PM CST · Pinterest Interview
       </p>
     </div>
   );

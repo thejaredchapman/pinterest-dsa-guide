@@ -443,47 +443,24 @@ export default function TuesdayPage() {
       {/* Day header */}
       <div className="mb-8">
         <h1 className="text-3xl sm:text-5xl font-bold dark:text-white text-gray-900 mb-2">
-          Day 3 <span className="text-[#E60023]">—</span> Interview Day
+          Day 2 <span className="text-[#E60023]">—</span> Graphs & DP
         </h1>
-        <p className="text-lg text-[#E60023] font-semibold mb-4">Tuesday · June 3 · 3:30 PM PDT</p>
-        <div className="glass-card rounded-2xl p-5 border border-[#E60023]/30">
+        <p className="text-lg text-[#E60023] font-semibold mb-4">Wednesday · June 3</p>
+        <div className="glass-card rounded-2xl p-5">
           <p className="dark:text-gray-100 text-gray-700 text-sm leading-relaxed">
-            Day 3 focus: BST validation, Level Order BFS, Graphs (Islands + Snakes &amp; Ladders), Fibonacci memoization, then the two stretch problems. You have until 3:30 PM. Do problems 15–19 with full ritual, then run problems 20–21 under a timer. After noon: stop grinding, re-type all 7 templates from memory, and sort logistics.
+            Day 2 focus: BST validation, Level Order BFS, Graphs (Islands + Snakes &amp; Ladders), Fibonacci memoization, then the two stretch problems. Do problems 15–19 with full ritual, then run problems 20–21 under a timer. End the day able to recite the DFS/BFS tradeoff from memory.
           </p>
         </div>
       </div>
 
       {/* Progress tracker */}
-      <ProgressBar topicIds={TOPIC_IDS} label="Day 3 Progress" />
+      <ProgressBar topicIds={TOPIC_IDS} label="Day 2 Progress" />
+
 
       {/* Topic cards */}
       {topics.map((topic) => (
         <TopicCard key={topic.number} {...topic} />
       ))}
-
-      {/* Interview Day Checklist */}
-      <div className="glass-card rounded-2xl p-5 sm:p-6 mt-8">
-        <h3 className="text-sm font-bold uppercase tracking-widest text-[#E60023] mb-4">
-          Interview Day Checklist
-        </h3>
-        <ul className="space-y-2">
-          {[
-            "Restate the problem before touching the keyboard",
-            "Ask clarifying questions out loud",
-            "State brute force + Big-O before optimizing",
-            "Name the pattern and explain the tradeoff",
-            "Narrate while coding",
-            "Trace through your example after coding",
-            "Test: empty, single element, duplicate, negative",
-            "Say 'What I'd improve given more time...'",
-          ].map((item, i) => (
-            <li key={i} className="flex items-center gap-3 text-sm dark:text-gray-100 text-gray-700">
-              <span className="w-5 h-5 rounded border-2 border-[#E60023]/50 flex-shrink-0" />
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
 
       {/* Bottom nav */}
       <div className="flex flex-col sm:flex-row sm:justify-between gap-3 mt-10 pt-6 border-t dark:border-white/10 border-gray-200">
@@ -494,7 +471,13 @@ export default function TuesdayPage() {
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <polyline points="15 18 9 12 15 6" />
           </svg>
-          Day 2: Monday
+          Day 1: Tuesday
+        </Link>
+        <Link
+          href="/wednesday"
+          className="flex items-center gap-2 text-sm font-medium text-[#E60023] hover:text-[#AD081B] transition-colors"
+        >
+          Day 3: Thursday →
         </Link>
       </div>
     </div>

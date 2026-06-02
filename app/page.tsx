@@ -25,27 +25,43 @@ const ritualSteps = [
 const scheduleCards = [
   {
     day: "Day 1",
-    date: "Sunday · May 31",
-    href: "/sunday",
-    topics: ["Two Sum", "Valid Palindrome", "Group Anagrams", "Ice Cream Parlor", "Top K Frequent", "+2 more"],
-    isToday: true,
-    emoji: "📦",
-  },
-  {
-    day: "Day 2",
-    date: "Monday · June 2",
+    date: "Tuesday · June 2 · Today",
     href: "/monday",
     topics: ["Balanced Brackets", "Min Stack", "Queue (2 Stacks)", "Reverse LL", "Cycle Detection", "+2 more"],
-    isToday: false,
+    isToday: true,
     emoji: "🌳",
   },
   {
-    day: "Day 3",
-    date: "Tuesday · June 3",
+    day: "Day 2",
+    date: "Wednesday · June 3",
     href: "/tuesday",
-    topics: ["Validate BST", "Number of Islands", "Snakes &amp; Ladders", "Fibonacci", "Longest Substring", "+2 more"],
+    topics: ["Validate BST", "Number of Islands", "Snakes & Ladders", "Fibonacci", "Longest Substring", "+2 more"],
     isToday: false,
     emoji: "🎯",
+  },
+  {
+    day: "Day 3",
+    date: "Thursday · June 4",
+    href: "/wednesday",
+    topics: ["Binary Search", "Rotated Array", "Climbing Stairs", "House Robber", "Word Search", "+2 more"],
+    isToday: false,
+    emoji: "🔍",
+  },
+  {
+    day: "Stretch",
+    date: "Thursday · June 4 (bonus)",
+    href: "/thursday",
+    topics: ["Course Schedule", "Merge K Lists", "Word Break", "3Sum", "Rain Water", "+2 more"],
+    isToday: false,
+    emoji: "🔥",
+  },
+  {
+    day: "Day 4",
+    date: "Friday · June 5 · 3:30 PM",
+    href: "/friday",
+    topics: ["Mock drill", "All templates from memory", "Stop by noon", "Rest & logistics"],
+    isToday: false,
+    emoji: "🚀",
   },
   {
     day: "Reference",
@@ -93,7 +109,7 @@ export default function HomePage() {
         </h1>
 
         <p className="text-lg sm:text-xl font-semibold text-[#E60023] mb-6">
-          For Jared — Pinterest Interview, Tuesday June 3
+          For Jared — Pinterest Interview, Friday June 5
         </p>
 
         <div className="glass-card rounded-2xl p-6 max-w-2xl mx-auto mb-8">
@@ -157,7 +173,7 @@ export default function HomePage() {
         <h2 className="text-2xl font-bold dark:text-white text-gray-900 mb-6 text-center">
           Study Schedule
         </h2>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
           {scheduleCards.map((card) => (
             <Link
               key={card.day}
